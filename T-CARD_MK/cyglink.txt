@@ -1,0 +1,2 @@
+"H:\My Project\T-Card\T-CARD_MK\Main\Config.obj",
+"H:\My Project\T-Card\T-CARD_MK\Main\Main.obj"  TO "H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL" RS(256) PL(68) PW(78) 
