@@ -25,6 +25,10 @@ void Timer_Init()
     TMOD      = 0x20;
     CKCON     = 0x08;
     TH1       = 0xB2;
+    TMR2RLL   = 0x78;
+    TMR2RLH   = 0xEC;
+    TMR3RLL   = 0x78;
+    TMR3RLH   = 0xEC;
 }
 
 void UART_Init()
@@ -83,8 +87,9 @@ void Port_IO_Init()
 
 void Interrupts_Init()
 {
+    EIE1      = 0x80;
     EIE2      = 0x02;
-    IE        = 0x90;
+    IE        = 0xB0;
 }
 
 // Initialization function for device,

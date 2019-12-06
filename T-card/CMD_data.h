@@ -15,7 +15,7 @@ static constexpr uint8_t C = 0x43;
 static constexpr uint8_t P = 0x50;
 static constexpr uint8_t N = 0x4E;
 
-uint8_t getCRC(uint8_t* data, int size);
+uint8_t getCRC(uint8_t* data, uint8_t size);
 
 std::vector<uint8_t> getNumberCard(std::vector<uint8_t>& data);
 

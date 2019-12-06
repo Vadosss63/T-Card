@@ -2,7 +2,7 @@
 
 namespace CMD {
 
-uint8_t getCRC(uint8_t* data, int size)
+uint8_t getCRC(uint8_t* data, uint8_t size)
 {
     uint8_t crc = 0;
     for (int i = 0; i < size; ++i)

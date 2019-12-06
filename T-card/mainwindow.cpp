@@ -197,27 +197,27 @@ void MainWindow::checkStatusBtn()
     print("Status");
     m_port->writeToPort(CMD::getStatusCard());
     printSendData(CMD::getStatusCard());
-    m_port->readInPort(1);
-    std::vector<uint8_t> data;
-    m_port->getData(data);
-    printReadData(data);
-//    m_port->readInPort(12);
-//    m_port->getData(data);
+    //m_port->readInPort(1);
+//    std::vector<uint8_t> data = m_port->getDataAnswer();
+//    //m_port->getData(data);
+//    printReadData(data);
+////    m_port->readInPort(12);
+////    m_port->getData(data);
+////    printReadData(data);
+
+//    data = m_port->getDataAnswer();
 //    printReadData(data);
 
-    data = m_port->getDataAnswer();
-    printReadData(data);
-
-    if(CMD::checkStatusCard(data))
-    {
-        ui->StatusCardLabel->setText("Card ok");
-        ui->OperationCardGB->setEnabled(true);
-    }
-    else
-    {
-        ui->StatusCardLabel->setText("No card");
-        ui->OperationCardGB->setEnabled(false);
-    }
+//    if(CMD::checkStatusCard(data))
+//    {
+//        ui->StatusCardLabel->setText("Card ok");
+//        ui->OperationCardGB->setEnabled(true);
+//    }
+//    else
+//    {
+//        ui->StatusCardLabel->setText("No card");
+//        ui->OperationCardGB->setEnabled(false);
+//    }
 }
 
 void MainWindow::showNumberCard(const QString& number)

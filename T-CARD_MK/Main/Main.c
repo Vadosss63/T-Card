@@ -1,223 +1,177 @@
-
-#include "Config.h"
-#include "MCU_IO.h"
-
-
-//#define uart_head_h 0xAB
-//#define uart_head_l 0xBA
-
-#define uart_head_h 0xf2
-#define uart_head_l 0x00
-
-static char Byte;
-static int readByte = 0;
-static int sizeData = 0;
+#include "config.h"
+#include "CMD_data.h"  
 
 
+void sendToCardReader(uint8_t* d, uint8_t size);
 
-void parsingControl();
-void sendAnswer();
+///
+// data -- по умолчанию (128 байт + (idata 128 стек))
+// xdata -- запись в 4kb
+
+///==================UART================================///
+#define UART_BUFFERSIZE 32
+
+uint8_t xdata UART_BufferCR[UART_BUFFERSIZE];
+uint8_t xdata ParsingBufferCR[24];
+
+uint8_t xdata UART_BufferIface[UART_BUFFERSIZE];
+uint8_t xdata ParsingBufferIFace[24];
+
+uint8_t Byte;
+
+// Флаг приняты данные по UART
+bit readyUartRX_CR = 0;
+bit readyUartRX_Iface = 0;
+
+uint8_t readByteCR = 0;
+uint8_t readByteIface = 0;
+
+uint8_t sizeSend = 0;
+
+bit test = 0;
+
+bit TI1;
+bit RI1;
+///==================END================================///
 
 
-//------------------------------------------------------------------------------//
-//                               Main function                                  //
-//------------------------------------------------------------------------------//
+void parsingDataCR(){
+	readyUartRX_CR = 0;
+}
 
-void UART_RX_DECODE()
-{
-	b_uart_rx = 0;
-	
-	if(UART_Buffer[UART_CMD] == CMD_CONTROL)
+void parsingDataIFace(){
+	readyUartRX_Iface = 0;
+
+	if(ParsingBufferIFace[1]== 0xf2)
 	{
-		parsingControl();
-	}	
+		if(test){
+			LockCardRider lcr;
+			lcr = getLock();
+			sendToCardReader((uint8_t*)(&lcr), 8);
+			test = 0;
+		}else{
+			UnlockCardRider ulcr;
+			ulcr = getUnlock();
+			sendToCardReader((uint8_t*)(&ulcr), 8);
+			test = 1;
+		}
+	}
 }
 
-void parsingControl()
-{
-	char control = UART_Buffer[UART_Data + 3];
-    bit cb0 = (control >> 0) & 1u;
-	bit cb1 = (control >> 1) & 1u;
-	bit cb2 = (control >> 2) & 1u;
-	bit cb3 = (control >> 3) & 1u;
-	
-		
-	sendAnswer();
-}
-
-void sendAnswer()  
-{
-  SBUF1 = 0x06;
-}
 
 void main(void)
 {
 	
 	PCA0MD &= ~0x40; // Disable the watchdog timer 
 	Init_Device();
-	EA = 1;
-   	//	ES0 = 1;                            // Enable UART0 interrupts
+	TMR3CN &= 0x04; // вкл. таймера
 	while(1) {
-		// PCA0MD = 0x00;
-		if(b_uart_rx)		
-			UART_RX_DECODE();		
-	};
-}
-
-
-char getCRC(unsigned char size)
-{
-	char crc = 0;
-	char i;
-	for (i = 0; i < size; i++)
-	{
-		crc += UART_Buffer[i];	
+		PCA0MD = 0x00;
+		if(readyUartRX_Iface)
+			parsingDataIFace();			
+								
 	}
-	return crc;
+		
 }
 
-char getCRC_CR(unsigned char size)
+
+
+///==================UART================================///
+
+void sendToInterface(void)  
 {
-	char crc = 0;
-	char i;
-	for (i = 0; i < size; i++)
-	{
-		crc = crc ^ UART_Buffer[i];	
-	}
-	return crc;
+  	SBUF1 = 0x06;
 }
 
-//кр
-void UART0_Interrupt (void) interrupt 4
+void sendToCardReader(uint8_t* d, uint8_t size)  
+{
+	while(size)	{
+		size--;
+  		UART_BufferCR[size] = d[size];
+	}
+	sizeSend = size;
+}
+
+
+void cardReaderUARTTimer (void) interrupt INTERRUPT_TIMER2
+{
+	TR2 = 0; // выключение таймера
+	if(readByteCR == 1)	{
+		isValidAnswer(UART_BufferCR[0]); // проверка ответа			
+	}else{
+		if(isValidData(&UART_BufferCR, readByteCR))
+		{
+			while(readByteCR){ //копируем данные в буфер парсинга 
+				readByteCR--;
+				ParsingBufferCR[readByteCR] = UART_BufferCR[readByteCR];
+			}			
+			readyUartRX_CR = 1;
+		}		
+	}
+	readByteCR = 0; // обнуление количества принятых байт
+}
+
+void cardReaderUART (void) interrupt INTERRUPT_UART0
 {
    PCA0MD &= ~0x40;
    if (TI0 == 1)                   // Check if transmit flag is set
    {
-      TI0 = 0; 
+   		TI0 = 0;
+		while(sizeSend) { //вычитываем весь буффур
+			sizeSend--;
+			SBUF0 = UART_BufferCR[sizeSend];
+		}      	
    }
 
    if (RI0 == 1)
-   {  
-
-      RI0 = 0;                           // Clear interrupt flag
-      Byte = SBUF0;                      // Read a character from UART	
-	  UART_Buffer[readByte] = Byte;      // Store in array
-
-	if(readByte == 0)
-	{
-		if(UART_Buffer[readByte] == uart_head_h)		
-			readByte++;	
-
-		return;
-	}
-    
-	if(readByte == 1)
-	{
-		if(UART_Buffer[readByte] == uart_head_l)	
-			readByte++;		
-		else 
-			readByte = 0;
-
-		return;
-	}
-
-	if(readByte == 2 || readByte == 3)
-	{
-		readByte++;
-		return;
-	}
-
-    if(readByte == 4)
-	{
-		sizeData = Byte;
-		readByte++;
-		return;
-	}
-	
-	while(readByte < sizeData + 5)
-	{
-	    readByte++;	
-		return;
-	}
-
-    if(readByte == sizeData + 5)
-	{
-		if(Byte == getCRC(readByte))	
-			b_uart_rx = 1;	
-
-	}
-    readByte = 0;	      
-
+   {
+   		if(readByteCR == 0)
+		TR2 = 1;// вкл. таймера
+			
+      	RI0 = 0;                           		// Clear interrupt flag
+      	Byte = SBUF0;                      		// Read a character from UART	
+	  	UART_BufferCR[readByteCR] = Byte;      	// Store in array
+		readByteCR++;	
    }
 }
 
-bit TI1;
-bit RI1;
+void interfaceUARTTimer(void) interrupt INTERRUPT_TIMER3
+{
+	TMR3CN &= 0xFB; // выкл. таймера
 
-//ИНТЕРФЕЙС
-void UART1_Interrupt (void) interrupt 16
+	
+	while(readByteIface){ //копируем данные в буфер парсинга 
+		readByteIface--;
+		ParsingBufferIFace[readByteIface] = UART_BufferIface[readByteIface];
+	}
+
+	readByteIface = 0; // обнуление количества принятых байт
+			
+	readyUartRX_Iface = 1;
+}
+
+void interfaceUART(void) interrupt INTERRUPT_UART1
 {
     PCA0MD &= ~0x40;
 
 	TI1 = SCON1 & 2u;;	//  UART TX
+
+   	if (TI1 == 1)       // Check if transmit flag is set
+   	{
+      	SCON1 &= 0xfd; 
+   	}
+
 	RI1 = SCON1 & 1u;	//  UART RX
-
-   if (TI1 == 1)                   // Check if transmit flag is set
-   {
-      SCON1 &= 0xfd; 
-   }
-
-   if (RI1 == 1)
-   {  
-
-      SCON1 &= 0xfe;                           // Clear interrupt flag
-      Byte = SBUF1;                      // Read a character from UART	
-	  UART_Buffer[readByte] = Byte;      // Store in array
-
-	if(readByte == 0)
-	{
-		if(UART_Buffer[readByte] == uart_head_h)		
-			readByte++;	
-
-		return;
-	}
-    
-	if(readByte == 1)
-	{
-		if(UART_Buffer[readByte] == uart_head_l)	
-			readByte++;		
-		else 
-			readByte = 0;
-
-		return;
-	}
-
-	if(readByte == 2 || readByte == 3)
-	{
-		readByte++;
-		return;
-	}
-
-    if(readByte == 4)
-	{
-		sizeData = Byte;
-		readByte++;
-		return;
-	}
-	
-//	while(readByte < sizeData + 5)
-//	{
-//	    readByte++;	
-//		return;
-//	}
-
-    if(readByte == sizeData + 5)
-	{
-		if(Byte == getCRC(readByte))	
-			b_uart_rx = 1;	
-
-	}
-    readByte = 0;	      
-	sendAnswer();
-   }
+   	if (RI1 == 1)
+   	{
+		if(readByteIface == 0)
+			TMR3CN &= 0x04; // вкл. таймера
+			
+	  	SCON1 &= 0xfe;                     		// Clear interrupt flag
+      	Byte = SBUF1;                      		// Read a character from UART	
+	  	UART_BufferIface[readByteIface] = Byte;      	// Store in array
+		readByteIface++;
+    	      
+   	}
 }
+
