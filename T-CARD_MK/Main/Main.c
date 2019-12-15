@@ -99,7 +99,7 @@ void sendToCardReader(uint8_t* d, uint8_t size)
 }
 
 
-void cardReaderUARTTimer (void) interrupt INTERRUPT_TIMER2
+void cardReaderUARTTimer(void) interrupt INTERRUPT_TIMER2
 {
 	TF2H = 0;			// Остановка прирывания
 	TR2 = 0; 	// выключение таймера
@@ -119,7 +119,7 @@ void cardReaderUARTTimer (void) interrupt INTERRUPT_TIMER2
 	readByteCR = 0; // обнуление количества принятых байт
 }
 
-void cardReaderUART (void) interrupt INTERRUPT_UART0
+void cardReaderUART(void) interrupt INTERRUPT_UART0
 {
    PCA0MD &= ~0x40;
    if(TI0 == 1){                  // Check if transmit flag is set
@@ -148,7 +148,7 @@ void cardReaderUART (void) interrupt INTERRUPT_UART0
 
 void interfaceUARTTimer(void) interrupt INTERRUPT_TIMER3
 {
-	// TMR3CN &=				// Остановка прирывания
+	// TMR3CN &= // Остановка прирывания
 	TMR3CN &= 0x7B; // выкл. таймера
 	sizeParsingDataIface = 	readByteIface;
 	while(readByteIface){ //копируем данные в буфер парсинга 

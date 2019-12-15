@@ -22,10 +22,10 @@ bit isValidData(uint8_t* d, uint8_t size)
     if(d[size - 2] != CMD_ETX)
         return 0;
     // Проверка размерности
-    if(size != (d[SIZE_DATA] + 5))
-        return 0;
+//    if(size != (d[SIZE_DATA] + 5))
+//        return 0;
     // Проверка CRC
-    if(getCRC(d, size) != d[size - 1])
+    if(getCRC(d, size - 1) != d[size - 1])
         return 0;
 
     return 1;

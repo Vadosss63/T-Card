@@ -40,12 +40,15 @@ void testGetPasswordSum(PasswordCard password)
     printf("End Test\n");
 }
 
+
 int main()
 {    
-    PasswordCard password;
-    password.b16[0] = 0xFFFF;
-    password.b16[1] = 0xFFFF;
-    password.b16[2] = 0xFFFF;
-    testGetPasswordSum(password);
+//    PasswordCard password;
+//    password.b16[0] = 0xFFFF;
+//    password.b16[1] = 0xFFFF;
+//    password.b16[2] = 0xFFFF;
+//    testGetPasswordSum(password);
+    StatusCard statusCard = getStatusCard();
+     bit val = isValidData(statusCard.b, sizeof(statusCard));
     return 0;
 }
