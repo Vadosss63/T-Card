@@ -1,4 +1,4 @@
-#ifndef _INIT_TYPE_H      
+#ifndef _INIT_TYPE_H
 #define _INIT_TYPE_H
 
 // Переопределение переменных
@@ -36,6 +36,38 @@ typedef struct LockCardRider {
 typedef struct UnlockCardRider {
    	uint8_t b[8];
 } UnlockCardRider;
+#endif
+
+
+#ifndef	SumCard
+typedef struct SumCard {
+   	uint8_t b[13];
+} SumCard;
+#endif
+
+#ifndef	StatusCard
+typedef struct StatusCard {
+    uint8_t b[8];
+} StatusCard;
+#endif
+
+#ifndef	WriteSumCard
+typedef struct WriteSumCard {
+   	uint8_t b[29];
+} WriteSumCard;
+#endif
+
+#ifndef	PasswordCard
+typedef union PasswordCard {
+   	uint16_t b16[3];
+	uint8_t b[6];	
+} PasswordCard;
+#endif
+
+#ifndef	PasswordSumCard
+typedef struct PasswordSumCard {
+    uint8_t b[19];
+} PasswordSumCard;
 #endif
 
 ///////////////////////
