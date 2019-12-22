@@ -16,5 +16,6 @@ extern void setWriteAnswerOperationCard(AnswerOperationCard* answerOperationCard
 extern void setIncAnswerOperationCard(AnswerOperationCard* answerOperationCard, enum CMD_ERROR err);
 extern void setDecAnswerOperationCard(AnswerOperationCard* answerOperationCard, enum CMD_ERROR err);
 extern enum CMD_INTERFACE parsingCommandInterface(uint8_t* dataCMD, uint8_t size);
+extern ToUint16 parsingOperationSumCard(uint8_t* dataCMD);
 
 #endif // CMD_INTERFACE_H

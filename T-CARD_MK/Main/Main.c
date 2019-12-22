@@ -3,6 +3,7 @@
 #include "cmd_interface.h"
 
 
+
 void sendToCardReader(uint8_t* d, uint8_t size);
 
 ///
@@ -44,9 +45,47 @@ void parsingDataCR(){
 	readyUartRX_CR = 0;
 }
 
+void sumCardOperation(){
+
+}
+
+void writeCardOperation(){
+
+}
+
+void incCardOperation(){
+
+}
+
+void decCardOperation(){
+
+}
+
 void parsingDataIFace(){
 	readyUartRX_Iface = 0;
 
+ 	switch (parsingCommandInterface(&ParsingBufferIFace, sizeParsingDataIface)) {
+    case SUM_CARD:{
+		sumCardOperation();
+        break;
+    }
+    case WRITE_SUM:{
+		writeCardOperation();
+        break;
+    }
+    case INC_SUM:{
+		incCardOperation();
+        break;
+    }
+    case DEC_SUM:{
+		decCardOperation();
+        break;
+    }
+    default:
+        break;
+    }
+
+/*
 	if(ParsingBufferIFace[0]== 0xf2)
 	{
 		if(test){
@@ -61,6 +100,7 @@ void parsingDataIFace(){
 			test = 1;
 		}
 	}
+*/
 }
 
 

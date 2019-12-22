@@ -69,3 +69,11 @@ enum CMD_INTERFACE parsingCommandInterface(uint8_t* dataCMD, uint8_t size){
     return (enum CMD_INTERFACE)dataCMD[2];
 }
 
+ToUint16 parsingOperationSumCard(uint8_t* dataCMD){
+    ToUint16 sum;
+    sum.b[0] = dataCMD[4];
+    sum.b[1] = dataCMD[3];
+    return sum;
+}
+
+

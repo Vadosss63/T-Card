@@ -26,6 +26,8 @@ void TEST_parsingCommandInterface()
         printf("Fail DEC_SUM! \n");
     }
 
+
+
     printf("TEST_parsingCommandInterface - END \n");
 }
 

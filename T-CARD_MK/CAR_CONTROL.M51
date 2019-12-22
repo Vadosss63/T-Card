@@ -1,12 +1,11 @@
-BL51 BANKED LINKER/LOCATER V6.22              12/22/2019  23:40:09  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22              12/23/2019  00:34:19  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
 C:\KEIL_V5\C51\BIN\BL51.EXE H:\My Project\T-Card\T-CARD_MK\Main\Config.obj, H:
 >> \My Project\T-Card\T-CARD_MK\Main\Main.obj, H:\My Project\T-Card\T-CARD_MK\
->> Main\CMD_data.obj, H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj, H
->> :\My Project\T-Card\T-CARD_MK\Main\crc_xor.obj TO H:\My Project\T-Card\T-CA
->> RD_MK\CAR_CONTROL RS (256) PL (68) PW (78)
+>> Main\CMD_data.obj, H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj TO
+>>  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL RS (256) PL (68) PW (78)
 
 
 MEMORY MODEL: SMALL
@@ -17,9 +16,7 @@ INPUT MODULES INCLUDED:
   H:\My Project\T-Card\T-CARD_MK\Main\Main.obj (MAIN)
   H:\My Project\T-Card\T-CARD_MK\Main\CMD_data.obj (CMD_DATA)
   H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERFACE)
-  H:\My Project\T-Card\T-CARD_MK\Main\crc_xor.obj (CRC_XOR)
   C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
-  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?COPY)
   C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
   C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
   C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CSTPTR)
@@ -35,111 +32,119 @@ LINK MAP OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0012H     UNIT         _DATA_GROUP_
-            DATA    001AH     0006H     UNIT         ?DT?GETPASSWORDSUM?CMD_DA
+            DATA    0008H     0008H     UNIT         _DATA_GROUP_
+            DATA    0010H     0007H     UNIT         ?DT?MAIN
+            DATA    0017H     0006H     UNIT         ?DT?GETPASSWORDSUM?CMD_DA
 >> TA
+            DATA    001DH     0003H     UNIT         ?DT?_SENDTOCARDREADER?MAI
+>> N
             BIT     0020H.0   0000H.5   UNIT         ?BI?MAIN
                     0020H.5   0000H.3                *** GAP ***
-            DATA    0021H     0007H     UNIT         ?DT?MAIN
-            DATA    0028H     0005H     UNIT         ?DT?_SETANSWERSUMCARD?CMD
+            DATA    0021H     0005H     UNIT         ?DT?_SETANSWERSUMCARD?CMD
 >> _INTERFACE
-            DATA    002DH     0004H     UNIT         ?DT?_GETNUMBERCARD?CMD_DA
+            DATA    0026H     0004H     UNIT         ?DT?_GETNUMBERCARD?CMD_DA
 >> TA
-            DATA    0031H     0004H     UNIT         ?DT?_PARSINGCOMMANDINTERF
->> ACE?CMD_INTERFACE
-            DATA    0035H     0003H     UNIT         ?DT?_CONVERTTOUINT16?CMD_
+            DATA    002AH     0003H     UNIT         ?DT?_CONVERTTOUINT16?CMD_
 >> DATA
-            DATA    0038H     0003H     UNIT         ?DT?_SETWRITEANSWEROPERAT
+            DATA    002DH     0003H     UNIT         ?DT?_SETWRITEANSWEROPERAT
 >> IONCARD?CMD_INTERFACE
-            DATA    003BH     0003H     UNIT         ?DT?_SETINCANSWEROPERATIO
+            DATA    0030H     0003H     UNIT         ?DT?_SETINCANSWEROPERATIO
 >> NCARD?CMD_INTERFACE
-            DATA    003EH     0003H     UNIT         ?DT?_SETDECANSWEROPERATIO
+            DATA    0033H     0003H     UNIT         ?DT?_SETDECANSWEROPERATIO
 >> NCARD?CMD_INTERFACE
-            IDATA   0041H     0001H     UNIT         ?STACK
+            DATA    0036H     0002H     UNIT         ?DT?_PARSINGOPERATIONSUMC
+>> ARD?CMD_INTERFACE
+            IDATA   0038H     0001H     UNIT         ?STACK
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
             XDATA   0000H     0079H     UNIT         ?XD?MAIN
             XDATA   0079H     0069H     UNIT         ?XD?CMD_DATA
             XDATA   00E2H     0001H     UNIT         ?XD?CMD_INTERFACE
-            XDATA   00E3H     0001H     UNIT         ?XD?CRC_XOR
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-            CODE    0003H     001FH     UNIT         ?PR?PARSINGDATAIFACE?MAIN
->> 
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 2
-
-
-                    0022H     0001H                  *** GAP ***
+            CODE    0003H     001DH     UNIT         ?PR?_INITINSERTEDCARD?CMD
+>> _INTERFACE
+            CODE    0020H     0003H     UNIT         ?PR?PARSINGDATACR?MAIN
             CODE    0023H     0003H     ABSOLUTE     
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 2
+
+
             CODE    0026H     0004H     UNIT         ?PR?SENDTOINTERFACE?MAIN
-                    002AH     0001H                  *** GAP ***
+            CODE    002AH     0001H     UNIT         ?PR?SUMCARDOPERATION?MAIN
+>> 
             CODE    002BH     0003H     ABSOLUTE     
             CODE    002EH     0045H     UNIT         ?PR?INTERFACEUARTTIMER?MA
 >> IN
             CODE    0073H     0003H     ABSOLUTE     
             CODE    0076H     000DH     UNIT         ?PR?PCA_INIT?CONFIG
             CODE    0083H     0003H     ABSOLUTE     
-            CODE    0086H     0170H     UNIT         ?C?LIB_CODE
-            CODE    01F6H     008CH     UNIT         ?C_C51STARTUP
-            CODE    0282H     0083H     UNIT         ?PR?_GETWRITESUM?CMD_DATA
+            CODE    0086H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0112H     0083H     UNIT         ?PR?_GETWRITESUM?CMD_DATA
 >> 
-            CODE    0305H     0082H     UNIT         ?PR?CARDREADERUARTTIMER?M
+            CODE    0195H     0082H     UNIT         ?PR?CARDREADERUARTTIMER?M
 >> AIN
-            CODE    0387H     0068H     UNIT         ?PR?GETPASSWORDSUM?CMD_DA
+            CODE    0217H     007AH     UNIT         ?C?LIB_CODE
+            CODE    0291H     0068H     UNIT         ?PR?GETPASSWORDSUM?CMD_DA
 >> TA
-            CODE    03EFH     0059H     UNIT         ?C_INITSEG
-            CODE    0448H     0059H     UNIT         ?PR?_ISVALIDDATA?CMD_DATA
+            CODE    02F9H     0059H     UNIT         ?PR?_ISVALIDDATA?CMD_DATA
 >> 
-            CODE    04A1H     0058H     UNIT         ?PR?CARDREADERUART?MAIN
-            CODE    04F9H     0049H     UNIT         ?PR?INTERFACEUART?MAIN
-            CODE    0542H     0047H     UNIT         ?PR?_PARSINGCOMMANDINTERF
+            CODE    0352H     0058H     UNIT         ?PR?CARDREADERUART?MAIN
+            CODE    03AAH     0055H     UNIT         ?C_INITSEG
+            CODE    03FFH     0049H     UNIT         ?PR?INTERFACEUART?MAIN
+            CODE    0448H     0047H     UNIT         ?PR?_PARSINGCOMMANDINTERF
 >> ACE?CMD_INTERFACE
-            CODE    0589H     0044H     UNIT         ?PR?_SENDTOCARDREADER?MAI
+            CODE    048FH     0043H     UNIT         ?PR?GETSUM?CMD_DATA
+            CODE    04D2H     0039H     UNIT         ?PR?GETACTIVATE?CMD_DATA
+            CODE    050BH     0032H     UNIT         ?PR?GETLOCK?CMD_DATA
+            CODE    053DH     0032H     UNIT         ?PR?GETUNLOCK?CMD_DATA
+            CODE    056FH     0032H     UNIT         ?PR?_SETANSWERSUMCARD?CMD
+>> _INTERFACE
+            CODE    05A1H     002FH     UNIT         ?PR?_SENDTOCARDREADER?MAI
 >> N
-            CODE    05CDH     0043H     UNIT         ?PR?GETSUM?CMD_DATA
-            CODE    0610H     0039H     UNIT         ?PR?GETACTIVATE?CMD_DATA
-            CODE    0649H     0032H     UNIT         ?PR?GETLOCK?CMD_DATA
-            CODE    067BH     0032H     UNIT         ?PR?GETUNLOCK?CMD_DATA
-            CODE    06ADH     0032H     UNIT         ?PR?_SETANSWERSUMCARD?CMD
->> _INTERFACE
-            CODE    06DFH     002EH     UNIT         ?PR?GETSTATUSCARD?CMD_DAT
+            CODE    05D0H     002EH     UNIT         ?PR?GETSTATUSCARD?CMD_DAT
 >> A
-            CODE    070DH     002CH     UNIT         ?PR?_INITANSWERSUMCARD?CM
+            CODE    05FEH     002CH     UNIT         ?PR?_INITANSWERSUMCARD?CM
 >> D_INTERFACE
-            CODE    0739H     002AH     UNIT         ?PR?_CONVERTTOUINT16?CMD_
+            CODE    062AH     002AH     UNIT         ?PR?_CONVERTTOUINT16?CMD_
 >> DATA
-            CODE    0763H     0027H     UNIT         ?PR?_GETNUMBERCARD?CMD_DA
+            CODE    0654H     0029H     UNIT         ?PR?PARSINGDATAIFACE?MAIN
+>> 
+            CODE    067DH     0027H     UNIT         ?PR?_GETNUMBERCARD?CMD_DA
 >> TA
-            CODE    078AH     0027H     UNIT         ?PR?_SETWRITEANSWEROPERAT
+            CODE    06A4H     0027H     UNIT         ?PR?_SETWRITEANSWEROPERAT
 >> IONCARD?CMD_INTERFACE
-            CODE    07B1H     0027H     UNIT         ?PR?_SETINCANSWEROPERATIO
+            CODE    06CBH     0027H     UNIT         ?PR?_SETINCANSWEROPERATIO
 >> NCARD?CMD_INTERFACE
-            CODE    07D8H     0027H     UNIT         ?PR?_SETDECANSWEROPERATIO
+            CODE    06F2H     0027H     UNIT         ?PR?_SETDECANSWEROPERATIO
 >> NCARD?CMD_INTERFACE
-            CODE    07FFH     0022H     UNIT         ?PR?_GETCRC?CRC_XOR
-            CODE    0821H     001DH     UNIT         ?PR?_INITINSERTEDCARD?CMD
->> _INTERFACE
-            CODE    083EH     001BH     UNIT         ?PR?_CHECKSTATUSCARD?CMD_
+            CODE    0719H     001BH     UNIT         ?PR?_CHECKSTATUSCARD?CMD_
 >> DATA
-            CODE    0859H     0019H     UNIT         ?PR?TIMER_INIT?CONFIG
-            CODE    0872H     0016H     UNIT         ?PR?_INITANSWEROPERATIONC
+            CODE    0734H     0019H     UNIT         ?PR?TIMER_INIT?CONFIG
+            CODE    074DH     0017H     UNIT         ?PR?_PARSINGOPERATIONSUMC
 >> ARD?CMD_INTERFACE
-            CODE    0888H     0015H     UNIT         ?PR?RESET_SOURCES_INIT?CO
+            CODE    0764H     0016H     UNIT         ?PR?_INITANSWEROPERATIONC
+>> ARD?CMD_INTERFACE
+            CODE    077AH     0015H     UNIT         ?PR?RESET_SOURCES_INIT?CO
 >> NFIG
-            CODE    089DH     0014H     UNIT         ?PR?MAIN?MAIN
-            CODE    08B1H     0012H     UNIT         ?PR?INIT_DEVICE?CONFIG
-            CODE    08C3H     0010H     UNIT         ?PR?UART_INIT?CONFIG
-            CODE    08D3H     0010H     UNIT         ?PR?PORT_IO_INIT?CONFIG
-            CODE    08E3H     000CH     UNIT         ?PR?_ISVALIDANSWER?CMD_DA
+            CODE    078FH     0014H     UNIT         ?PR?MAIN?MAIN
+            CODE    07A3H     0012H     UNIT         ?PR?INIT_DEVICE?CONFIG
+            CODE    07B5H     0010H     UNIT         ?PR?UART_INIT?CONFIG
+            CODE    07C5H     0010H     UNIT         ?PR?PORT_IO_INIT?CONFIG
+            CODE    07D5H     000CH     UNIT         ?PR?_ISVALIDANSWER?CMD_DA
 >> TA
-            CODE    08EFH     000AH     UNIT         ?PR?INTERRUPTS_INIT?CONFI
+            CODE    07E1H     000AH     UNIT         ?PR?INTERRUPTS_INIT?CONFI
 >> G
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 3
 
 
-            CODE    08F9H     0006H     UNIT         ?PR?_GETSUMCARD?CMD_DATA
-            CODE    08FFH     0003H     UNIT         ?PR?PARSINGDATACR?MAIN
+            CODE    07EBH     0006H     UNIT         ?PR?_GETSUMCARD?CMD_DATA
+            CODE    07F1H     0001H     UNIT         ?PR?WRITECARDOPERATION?MA
+>> IN
+            CODE    07F2H     0001H     UNIT         ?PR?INCCARDOPERATION?MAIN
+>> 
+            CODE    07F3H     0001H     UNIT         ?PR?DECCARDOPERATION?MAIN
+>> 
 
 
 
@@ -154,9 +159,6 @@ SEGMENT                                            DATA_GROUP
   +--> ?PR?_ISVALIDDATA?CMD_DATA
 
 ?PR?_ISVALIDDATA?CMD_DATA                        0008H    0004H
-  +--> ?PR?_GETCRC?CRC_XOR
-
-?PR?_GETCRC?CRC_XOR                              000CH    0003H
 
 *** NEW ROOT ***************************************************
 
@@ -176,12 +178,19 @@ SEGMENT                                            DATA_GROUP
   +--> ?PR?PORT_IO_INIT?CONFIG
   +--> ?PR?INTERRUPTS_INIT?CONFIG
 
-?PR?PARSINGDATAIFACE?MAIN                        000FH    0008H
-  +--> ?PR?GETLOCK?CMD_DATA
-  +--> ?PR?_SENDTOCARDREADER?MAIN
-  +--> ?PR?GETUNLOCK?CMD_DATA
+?PR?PARSINGDATAIFACE?MAIN                        -----    -----
+  +--> ?PR?_PARSINGCOMMANDINTERFACE?CMD_INTE...
+  +--> ?PR?SUMCARDOPERATION?MAIN
+  +--> ?PR?WRITECARDOPERATION?MAIN
+  +--> ?PR?INCCARDOPERATION?MAIN
+  +--> ?PR?DECCARDOPERATION?MAIN
 
-?PR?_SENDTOCARDREADER?MAIN                       0017H    0003H
+?PR?_PARSINGCOMMANDINTERFACE?CMD_INTE...         000CH    0004H
+
+
+
+UNRESOLVED EXTERNAL SYMBOLS:
+   _GETCRC
 
 
 
@@ -194,6 +203,9 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:00E6H         PUBLIC        EIE1
   D:00E7H         PUBLIC        EIE2
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 4
+
+
   D:00A4H         PUBLIC        P0MDOUT
   D:00CBH         PUBLIC        TMR2RLH
   D:00A8H         PUBLIC        IE
@@ -201,11 +213,8 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   D:00CAH         PUBLIC        TMR2RLL
   D:0092H         PUBLIC        TMR3RLL
   D:00FEH         PUBLIC        PCA0CPH4
-  C:08D3H         PUBLIC        Port_IO_Init
+  C:07C5H         PUBLIC        Port_IO_Init
   D:00D9H         PUBLIC        PCA0MD
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 4
-
-
   D:00FDH         PUBLIC        PCA0CPL4
   D:00E1H         PUBLIC        XBR0
   D:00E2H         PUBLIC        XBR1
@@ -214,31 +223,31 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   D:00FFH         PUBLIC        VDM0CN
   D:00B5H         PUBLIC        SBRLH1
   D:00B4H         PUBLIC        SBRLL1
-  C:08C3H         PUBLIC        UART_Init
+  C:07B5H         PUBLIC        UART_Init
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
   D:00D4H         PUBLIC        P0SKIP
-  C:08EFH         PUBLIC        Interrupts_Init
-  C:0888H         PUBLIC        Reset_Sources_Init
-  C:08B1H         PUBLIC        Init_Device
+  C:07E1H         PUBLIC        Interrupts_Init
+  C:077AH         PUBLIC        Reset_Sources_Init
+  C:07A3H         PUBLIC        Init_Device
   C:0076H         PUBLIC        PCA_Init
   D:008DH         PUBLIC        TH1
   D:00EFH         PUBLIC        RSTSRC
   D:0098H         PUBLIC        SCON0
   D:00D2H         PUBLIC        SCON1
   D:008EH         PUBLIC        CKCON
-  C:0859H         PUBLIC        Timer_Init
+  C:0734H         PUBLIC        Timer_Init
   -------         PROC          RESET_SOURCES_INIT
   -------         DO            
   D:0006H         SYMBOL        i
   -------         ENDDO         
-  C:0888H         LINE#         6
-  C:0888H         LINE#         7
-  C:0888H         LINE#         8
-  C:088BH         LINE#         9
-  C:088EH         LINE#         10
-  C:0899H         LINE#         11
-  C:089CH         LINE#         12
+  C:077AH         LINE#         6
+  C:077AH         LINE#         7
+  C:077AH         LINE#         8
+  C:077DH         LINE#         9
+  C:0780H         LINE#         10
+  C:078BH         LINE#         11
+  C:078EH         LINE#         12
   -------         ENDPROC       RESET_SOURCES_INIT
   -------         PROC          PCA_INIT
   C:0076H         LINE#         14
@@ -250,58 +259,58 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   C:0082H         LINE#         20
   -------         ENDPROC       PCA_INIT
   -------         PROC          TIMER_INIT
-  C:0859H         LINE#         22
-  C:0859H         LINE#         23
-  C:0859H         LINE#         24
-  C:085CH         LINE#         25
-  C:085FH         LINE#         26
-  C:0862H         LINE#         27
-  C:0865H         LINE#         28
-  C:0868H         LINE#         29
-  C:086BH         LINE#         30
-  C:086EH         LINE#         31
-  C:0871H         LINE#         32
+  C:0734H         LINE#         22
+  C:0734H         LINE#         23
+  C:0734H         LINE#         24
+  C:0737H         LINE#         25
+  C:073AH         LINE#         26
+  C:073DH         LINE#         27
+  C:0740H         LINE#         28
+  C:0743H         LINE#         29
+  C:0746H         LINE#         30
+  C:0749H         LINE#         31
+  C:074CH         LINE#         32
   -------         ENDPROC       TIMER_INIT
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 5
+
+
   -------         PROC          UART_INIT
-  C:08C3H         LINE#         34
-  C:08C3H         LINE#         35
-  C:08C3H         LINE#         36
-  C:08C6H         LINE#         37
-  C:08C9H         LINE#         38
-  C:08CCH         LINE#         39
-  C:08CFH         LINE#         40
-  C:08D2H         LINE#         41
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 5
-
-
+  C:07B5H         LINE#         34
+  C:07B5H         LINE#         35
+  C:07B5H         LINE#         36
+  C:07B8H         LINE#         37
+  C:07BBH         LINE#         38
+  C:07BEH         LINE#         39
+  C:07C1H         LINE#         40
+  C:07C4H         LINE#         41
   -------         ENDPROC       UART_INIT
   -------         PROC          PORT_IO_INIT
-  C:08D3H         LINE#         43
-  C:08D3H         LINE#         44
-  C:08D3H         LINE#         81
-  C:08D6H         LINE#         82
-  C:08D9H         LINE#         83
-  C:08DCH         LINE#         84
-  C:08DFH         LINE#         85
-  C:08E2H         LINE#         86
+  C:07C5H         LINE#         43
+  C:07C5H         LINE#         44
+  C:07C5H         LINE#         81
+  C:07C8H         LINE#         82
+  C:07CBH         LINE#         83
+  C:07CEH         LINE#         84
+  C:07D1H         LINE#         85
+  C:07D4H         LINE#         86
   -------         ENDPROC       PORT_IO_INIT
   -------         PROC          INTERRUPTS_INIT
-  C:08EFH         LINE#         88
-  C:08EFH         LINE#         89
-  C:08EFH         LINE#         90
-  C:08F2H         LINE#         91
-  C:08F5H         LINE#         92
-  C:08F8H         LINE#         93
+  C:07E1H         LINE#         88
+  C:07E1H         LINE#         89
+  C:07E1H         LINE#         90
+  C:07E4H         LINE#         91
+  C:07E7H         LINE#         92
+  C:07EAH         LINE#         93
   -------         ENDPROC       INTERRUPTS_INIT
   -------         PROC          INIT_DEVICE
-  C:08B1H         LINE#         97
-  C:08B1H         LINE#         98
-  C:08B1H         LINE#         99
-  C:08B4H         LINE#         100
-  C:08B7H         LINE#         101
-  C:08BAH         LINE#         102
-  C:08BDH         LINE#         103
-  C:08C0H         LINE#         104
+  C:07A3H         LINE#         97
+  C:07A3H         LINE#         98
+  C:07A3H         LINE#         99
+  C:07A6H         LINE#         100
+  C:07A9H         LINE#         101
+  C:07ACH         LINE#         102
+  C:07AFH         LINE#         103
+  C:07B2H         LINE#         104
   -------         ENDPROC       INIT_DEVICE
   -------         ENDMOD        CONFIG
 
@@ -311,26 +320,30 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   X:0001H         PUBLIC        CMD_P
   X:0002H         PUBLIC        convert
   C:0026H         PUBLIC        sendToInterface
-  C:08FFH         PUBLIC        parsingDataCR
-  D:0021H         PUBLIC        readByteIface
+  C:002AH         PUBLIC        sumCardOperation
+  C:0020H         PUBLIC        parsingDataCR
+  D:0010H         PUBLIC        readByteIface
   X:0004H         PUBLIC        UART_BufferCR
   B:00C8H.7       PUBLIC        TF2H
-  D:0022H         PUBLIC        Byte
+  D:0011H         PUBLIC        Byte
   D:00D9H         PUBLIC        PCA0MD
   B:0020H.0       PUBLIC        readyUartRX_Iface
-  C:089DH         PUBLIC        main
+  C:078FH         PUBLIC        main
   X:0024H         SYMBOL        CMD_ETX
-  D:0023H         PUBLIC        sizeParsingDataCR
-  C:0003H         PUBLIC        parsingDataIFace
-  C:04A1H         PUBLIC        cardReaderUART
+  D:0012H         PUBLIC        sizeParsingDataCR
+  C:0654H         PUBLIC        parsingDataIFace
+  C:0352H         PUBLIC        cardReaderUART
   X:0025H         SYMBOL        CMD_STX
-  C:0305H         PUBLIC        cardReaderUARTTimer
+  C:0195H         PUBLIC        cardReaderUARTTimer
   D:0091H         PUBLIC        TMR3CN
   B:0020H.1       PUBLIC        test
-  D:0024H         PUBLIC        sendCR
-  C:059EH         PUBLIC        _sendToCardReader
-  D:0025H         PUBLIC        sizeSend
-  D:0026H         PUBLIC        readByteCR
+  D:0013H         PUBLIC        sendCR
+  C:05A1H         PUBLIC        _sendToCardReader
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 6
+
+
+  D:0014H         PUBLIC        sizeSend
+  D:0015H         PUBLIC        readByteCR
   B:0098H.0       PUBLIC        RI0
   B:0020H.2       PUBLIC        RI1
   X:0026H         PUBLIC        ParsingBufferCR
@@ -339,172 +352,187 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   X:003EH         SYMBOL        CMD_OK
   X:003FH         PUBLIC        UART_BufferIface
   B:0020H.4       PUBLIC        readyUartRX_CR
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 6
-
-
   B:00C8H.2       PUBLIC        TR2
   D:0099H         PUBLIC        SBUF0
+  C:07F3H         PUBLIC        decCardOperation
   D:00D3H         PUBLIC        SBUF1
+  C:07F1H         PUBLIC        writeCardOperation
   D:00D2H         PUBLIC        SCON1
   D:00CDH         PUBLIC        TMR2H
-  D:0027H         PUBLIC        sizeParsingDataIface
+  D:0016H         PUBLIC        sizeParsingDataIface
   D:0095H         PUBLIC        TMR3H
+  C:07F2H         PUBLIC        incCardOperation
   X:005FH         PUBLIC        ParsingBufferIFace
   D:00CCH         PUBLIC        TMR2L
   D:0094H         PUBLIC        TMR3L
-  C:04F9H         PUBLIC        interfaceUART
+  C:03FFH         PUBLIC        interfaceUART
   X:0077H         SYMBOL        CMD_C
   C:002EH         PUBLIC        interfaceUARTTimer
   X:0078H         SYMBOL        HEAD_CONST
   -------         PROC          PARSINGDATACR
-  C:08FFH         LINE#         43
-  C:08FFH         LINE#         44
-  C:0901H         LINE#         45
+  C:0020H         LINE#         44
+  C:0020H         LINE#         45
+  C:0022H         LINE#         46
   -------         ENDPROC       PARSINGDATACR
+  -------         PROC          SUMCARDOPERATION
+  C:002AH         LINE#         48
+  C:002AH         LINE#         50
+  -------         ENDPROC       SUMCARDOPERATION
+  -------         PROC          WRITECARDOPERATION
+  C:07F1H         LINE#         52
+  C:07F1H         LINE#         54
+  -------         ENDPROC       WRITECARDOPERATION
+  -------         PROC          INCCARDOPERATION
+  C:07F2H         LINE#         56
+  C:07F2H         LINE#         58
+  -------         ENDPROC       INCCARDOPERATION
+  -------         PROC          DECCARDOPERATION
+  C:07F3H         LINE#         60
+  C:07F3H         LINE#         62
+  -------         ENDPROC       DECCARDOPERATION
   -------         PROC          PARSINGDATAIFACE
-  -------         DO            
-  D:000FH         SYMBOL        lcr
-  D:000FH         SYMBOL        ulcr
-  -------         ENDDO         
-  -------         DO            
-  D:000FH         SYMBOL        ulcr
-  -------         ENDDO         
-  C:0003H         LINE#         47
-  C:0003H         LINE#         48
-  C:0005H         LINE#         50
-  C:000DH         LINE#         51
-  C:000DH         LINE#         52
-  C:0010H         LINE#         54
-  C:0013H         LINE#         55
-  C:0016H         LINE#         56
-  C:0018H         LINE#         57
-  C:0019H         LINE#         59
-  C:001CH         LINE#         60
-  C:001FH         LINE#         61
-  C:0021H         LINE#         62
-  C:0021H         LINE#         63
-  C:0021H         LINE#         64
+  C:0654H         LINE#         64
+  C:0654H         LINE#         65
+  C:0656H         LINE#         67
+  C:0670H         LINE#         68
+  C:0670H         LINE#         69
+  C:0673H         LINE#         70
+  C:0673H         LINE#         71
+  C:0673H         LINE#         72
+  C:0673H         LINE#         73
+  C:0676H         LINE#         74
+  C:0676H         LINE#         75
+  C:0676H         LINE#         76
+  C:0676H         LINE#         77
+  C:0679H         LINE#         78
+  C:0679H         LINE#         79
+  C:0679H         LINE#         80
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 7
+
+
+  C:0679H         LINE#         81
+  C:067CH         LINE#         82
+  C:067CH         LINE#         83
+  C:067CH         LINE#         84
+  C:067CH         LINE#         85
+  C:067CH         LINE#         86
+  C:067CH         LINE#         104
   -------         ENDPROC       PARSINGDATAIFACE
   -------         PROC          MAIN
-  C:089DH         LINE#         67
-  C:089DH         LINE#         68
-  C:089DH         LINE#         70
-  C:08A0H         LINE#         71
-  C:08A3H         LINE#         72
-  C:08A6H         LINE#         73
-  C:08A6H         LINE#         74
-  C:08A9H         LINE#         75
-  C:08ACH         LINE#         76
-  C:08AFH         LINE#         78
+  C:078FH         LINE#         107
+  C:078FH         LINE#         108
+  C:078FH         LINE#         110
+  C:0792H         LINE#         111
+  C:0795H         LINE#         112
+  C:0798H         LINE#         113
+  C:0798H         LINE#         114
+  C:079BH         LINE#         115
+  C:079EH         LINE#         116
+  C:07A1H         LINE#         118
   -------         ENDPROC       MAIN
   -------         PROC          SENDTOINTERFACE
-  C:0026H         LINE#         86
-  C:0026H         LINE#         87
-  C:0026H         LINE#         88
-  C:0029H         LINE#         89
+  C:0026H         LINE#         126
+  C:0026H         LINE#         127
+  C:0026H         LINE#         128
+  C:0029H         LINE#         129
   -------         ENDPROC       SENDTOINTERFACE
-  -------         PROC          L?0032
-  -------         ENDPROC       L?0032
   -------         PROC          _SENDTOCARDREADER
-  D:0017H         SYMBOL        d
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 7
-
-
+  D:001DH         SYMBOL        d
   D:0005H         SYMBOL        size
-  C:059EH         LINE#         91
-  C:05A4H         LINE#         92
-  C:05A4H         LINE#         93
-  C:05A6H         LINE#         94
-  C:05A9H         LINE#         95
-  C:05AAH         LINE#         96
-  C:05C5H         LINE#         97
-  C:05C7H         LINE#         98
-  C:05CAH         LINE#         99
-  C:05CCH         LINE#         100
+  C:05A1H         LINE#         131
+  C:05A7H         LINE#         132
+  C:05A7H         LINE#         133
+  C:05A9H         LINE#         134
+  C:05ACH         LINE#         135
+  C:05ADH         LINE#         136
+  C:05C8H         LINE#         137
+  C:05CAH         LINE#         138
+  C:05CDH         LINE#         139
+  C:05CFH         LINE#         140
   -------         ENDPROC       _SENDTOCARDREADER
   -------         PROC          CARDREADERUARTTIMER
-  C:0305H         LINE#         103
-  C:0322H         LINE#         105
-  C:0324H         LINE#         106
-  C:0326H         LINE#         107
-  C:032BH         LINE#         108
-  C:0333H         LINE#         109
-  C:0335H         LINE#         110
-  C:0342H         LINE#         111
-  C:0342H         LINE#         112
-  C:0345H         LINE#         113
-  C:0349H         LINE#         114
-  C:034BH         LINE#         115
-  C:0365H         LINE#         116
-  C:0367H         LINE#         117
-  C:0369H         LINE#         118
-  C:0369H         LINE#         119
-  C:0369H         LINE#         120
-  C:036CH         LINE#         121
+  C:0195H         LINE#         143
+  C:01B2H         LINE#         145
+  C:01B4H         LINE#         146
+  C:01B6H         LINE#         147
+  C:01BBH         LINE#         148
+  C:01C3H         LINE#         149
+  C:01C5H         LINE#         150
+  C:01D2H         LINE#         151
+  C:01D2H         LINE#         152
+  C:01D5H         LINE#         153
+  C:01D9H         LINE#         154
+  C:01DBH         LINE#         155
+  C:01F5H         LINE#         156
+  C:01F7H         LINE#         157
+  C:01F9H         LINE#         158
+  C:01F9H         LINE#         159
+  C:01F9H         LINE#         160
+  C:01FCH         LINE#         161
   -------         ENDPROC       CARDREADERUARTTIMER
   -------         PROC          CARDREADERUART
-  C:04A1H         LINE#         123
-  C:04A9H         LINE#         125
-  C:04ACH         LINE#         126
-  C:04AFH         LINE#         127
-  C:04B1H         LINE#         128
-  C:04B8H         LINE#         129
-  C:04C6H         LINE#         130
-  C:04C8H         LINE#         131
-  C:04C8H         LINE#         132
-  C:04C8H         LINE#         134
-  C:04CBH         LINE#         135
-  C:04CFH         LINE#         136
-  C:04D1H         LINE#         137
-  C:04D3H         LINE#         138
-  C:04D5H         LINE#         139
-  C:04D5H         LINE#         141
-  C:04D8H         LINE#         142
-  C:04E6H         LINE#         143
-  C:04E8H         LINE#         144
-  C:04EBH         LINE#         145
-  C:04EEH         LINE#         146
-  C:04F0H         LINE#         147
-  C:04F0H         LINE#         148
+  C:0352H         LINE#         163
+  C:035AH         LINE#         165
+  C:035DH         LINE#         166
+  C:0360H         LINE#         167
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 8
+
+
+  C:0362H         LINE#         168
+  C:0369H         LINE#         169
+  C:0377H         LINE#         170
+  C:0379H         LINE#         171
+  C:0379H         LINE#         172
+  C:0379H         LINE#         174
+  C:037CH         LINE#         175
+  C:0380H         LINE#         176
+  C:0382H         LINE#         177
+  C:0384H         LINE#         178
+  C:0386H         LINE#         179
+  C:0386H         LINE#         181
+  C:0389H         LINE#         182
+  C:0397H         LINE#         183
+  C:0399H         LINE#         184
+  C:039CH         LINE#         185
+  C:039FH         LINE#         186
+  C:03A1H         LINE#         187
+  C:03A1H         LINE#         188
   -------         ENDPROC       CARDREADERUART
   -------         PROC          INTERFACEUARTTIMER
-  C:002EH         LINE#         150
-  C:003BH         LINE#         153
-  C:003EH         LINE#         154
-  C:0041H         LINE#         155
-  C:0045H         LINE#         156
-  C:0047H         LINE#         157
-  C:0061H         LINE#         158
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 8
-
-
-  C:0063H         LINE#         159
-  C:0065H         LINE#         160
-  C:0068H         LINE#         161
+  C:002EH         LINE#         190
+  C:003BH         LINE#         193
+  C:003EH         LINE#         194
+  C:0041H         LINE#         195
+  C:0045H         LINE#         196
+  C:0047H         LINE#         197
+  C:0061H         LINE#         198
+  C:0063H         LINE#         199
+  C:0065H         LINE#         200
+  C:0068H         LINE#         201
   -------         ENDPROC       INTERFACEUARTTIMER
   -------         PROC          INTERFACEUART
-  C:04F9H         LINE#         163
-  C:0501H         LINE#         165
-  C:0504H         LINE#         167
-  C:050AH         LINE#         169
-  C:050AH         LINE#         170
-  C:050AH         LINE#         172
-  C:050AH         LINE#         174
-  C:050FH         LINE#         175
-  C:0512H         LINE#         176
-  C:0512H         LINE#         177
-  C:0516H         LINE#         179
-  C:0518H         LINE#         180
-  C:051AH         LINE#         181
-  C:051DH         LINE#         183
-  C:051DH         LINE#         184
-  C:0520H         LINE#         185
-  C:0523H         LINE#         186
-  C:0531H         LINE#         187
-  C:0533H         LINE#         189
-  C:0536H         LINE#         190
-  C:0539H         LINE#         192
-  C:0539H         LINE#         193
+  C:03FFH         LINE#         203
+  C:0407H         LINE#         205
+  C:040AH         LINE#         207
+  C:0410H         LINE#         209
+  C:0410H         LINE#         210
+  C:0410H         LINE#         212
+  C:0410H         LINE#         214
+  C:0415H         LINE#         215
+  C:0418H         LINE#         216
+  C:0418H         LINE#         217
+  C:041CH         LINE#         219
+  C:041EH         LINE#         220
+  C:0420H         LINE#         221
+  C:0423H         LINE#         223
+  C:0423H         LINE#         224
+  C:0426H         LINE#         225
+  C:0429H         LINE#         226
+  C:0437H         LINE#         227
+  C:0439H         LINE#         229
+  C:043CH         LINE#         230
+  C:043FH         LINE#         232
+  C:043FH         LINE#         233
   -------         ENDPROC       INTERFACEUART
   -------         ENDMOD        MAIN
 
@@ -513,388 +541,374 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
   X:00D8H         SYMBOL        CMD_N
   X:00D9H         SYMBOL        CMD_P
   X:00DAH         SYMBOL        convert
-  C:083EH         PUBLIC        _checkStatusCard
-  C:0282H         PUBLIC        _getWriteSum
+  C:0719H         PUBLIC        _checkStatusCard
+  C:0112H         PUBLIC        _getWriteSum
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 9
+
+
   X:00DCH         SYMBOL        CMD_ETX
-  C:0763H         PUBLIC        _getNumberCard
-  C:067BH         PUBLIC        getUnlock
+  C:067DH         PUBLIC        _getNumberCard
+  C:053DH         PUBLIC        getUnlock
   X:00DDH         SYMBOL        CMD_STX
-  C:08E3H         PUBLIC        _isValidAnswer
-  C:06DFH         PUBLIC        getStatusCard
-  C:0448H         PUBLIC        _isValidData
-  C:0649H         PUBLIC        getLock
+  C:07D5H         PUBLIC        _isValidAnswer
+  C:05D0H         PUBLIC        getStatusCard
+  C:02F9H         PUBLIC        _isValidData
+  C:050BH         PUBLIC        getLock
   X:00DEH         PUBLIC        countZero
   X:00DFH         SYMBOL        CMD_OK
-  C:0387H         PUBLIC        getPasswordSum
-  C:0739H         PUBLIC        _convertToUint16
-  C:08F9H         PUBLIC        _getSumCard
+  C:0291H         PUBLIC        getPasswordSum
+  C:062AH         PUBLIC        _convertToUint16
+  C:07EBH         PUBLIC        _getSumCard
   X:00E0H         SYMBOL        CMD_C
-  C:05CDH         PUBLIC        getSum
-  C:0610H         PUBLIC        getActivate
+  C:048FH         PUBLIC        getSum
+  C:04D2H         PUBLIC        getActivate
   X:00E1H         SYMBOL        HEAD_CONST
   -------         PROC          _ISVALIDDATA
   D:0008H         SYMBOL        d
   D:000BH         SYMBOL        size
-  C:0448H         LINE#         6
-  C:0450H         LINE#         7
-  C:0450H         LINE#         9
-  C:045BH         LINE#         10
-  C:045DH         LINE#         12
-  C:047BH         LINE#         13
-  C:047DH         LINE#         18
-  C:049DH         LINE#         19
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 9
-
-
-  C:049FH         LINE#         21
-  C:04A0H         LINE#         22
+  C:02F9H         LINE#         6
+  C:0301H         LINE#         7
+  C:0301H         LINE#         9
+  C:030CH         LINE#         10
+  C:030EH         LINE#         12
+  C:032CH         LINE#         13
+  C:032EH         LINE#         18
+  C:034EH         LINE#         19
+  C:0350H         LINE#         21
+  C:0351H         LINE#         22
   -------         ENDPROC       _ISVALIDDATA
   -------         PROC          _ISVALIDANSWER
   D:0007H         SYMBOL        d
-  C:08E3H         LINE#         24
-  C:08E3H         LINE#         25
-  C:08E3H         LINE#         26
-  C:08EEH         LINE#         27
+  C:07D5H         LINE#         24
+  C:07D5H         LINE#         25
+  C:07D5H         LINE#         26
+  C:07E0H         LINE#         27
   -------         ENDPROC       _ISVALIDANSWER
   -------         PROC          _GETNUMBERCARD
   D:0001H         SYMBOL        d
   -------         DO            
-  D:002DH         SYMBOL        nc
+  D:0026H         SYMBOL        nc
   -------         ENDDO         
-  C:0763H         LINE#         30
-  C:0763H         LINE#         31
-  C:0763H         LINE#         33
-  C:076BH         LINE#         34
-  C:0773H         LINE#         35
-  C:077BH         LINE#         36
-  C:0783H         LINE#         37
-  C:0789H         LINE#         38
+  C:067DH         LINE#         30
+  C:067DH         LINE#         31
+  C:067DH         LINE#         33
+  C:0685H         LINE#         34
+  C:068DH         LINE#         35
+  C:0695H         LINE#         36
+  C:069DH         LINE#         37
+  C:06A3H         LINE#         38
   -------         ENDPROC       _GETNUMBERCARD
   -------         PROC          _CONVERTTOUINT16
-  D:0035H         SYMBOL        d
+  D:002AH         SYMBOL        d
   D:0005H         SYMBOL        startByte
-  C:0739H         LINE#         41
-  C:073FH         LINE#         42
-  C:073FH         LINE#         43
-  C:074BH         LINE#         44
-  C:075AH         LINE#         45
-  C:0762H         LINE#         46
+  C:062AH         LINE#         41
+  C:0630H         LINE#         42
+  C:0630H         LINE#         43
+  C:063CH         LINE#         44
+  C:064BH         LINE#         45
+  C:0653H         LINE#         46
   -------         ENDPROC       _CONVERTTOUINT16
   -------         PROC          _GETSUMCARD
   D:0001H         SYMBOL        d
-  C:08F9H         LINE#         48
-  C:08F9H         LINE#         49
-  C:08F9H         LINE#         50
-  C:08FEH         LINE#         51
+  C:07EBH         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 10
+
+
+  C:07EBH         LINE#         49
+  C:07EBH         LINE#         50
+  C:07F0H         LINE#         51
   -------         ENDPROC       _GETSUMCARD
   -------         PROC          _CHECKSTATUSCARD
   D:0001H         SYMBOL        d
   D:0005H         SYMBOL        size
-  C:083EH         LINE#         53
-  C:083EH         LINE#         54
-  C:083EH         LINE#         55
-  C:0844H         LINE#         56
-  C:0846H         LINE#         58
-  C:0858H         LINE#         59
+  C:0719H         LINE#         53
+  C:0719H         LINE#         54
+  C:0719H         LINE#         55
+  C:071FH         LINE#         56
+  C:0721H         LINE#         58
+  C:0733H         LINE#         59
   -------         ENDPROC       _CHECKSTATUSCARD
   -------         PROC          GETACTIVATE
   -------         DO            
   X:0079H         SYMBOL        ac
   -------         ENDDO         
-  C:0610H         LINE#         62
-  C:0610H         LINE#         63
-  C:0610H         LINE#         65
-  C:0618H         LINE#         66
-  C:061BH         LINE#         67
-  C:061FH         LINE#         68
-  C:0627H         LINE#         69
-  C:062BH         LINE#         70
-  C:062FH         LINE#         71
-  C:0633H         LINE#         72
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 10
-
-
-  C:0636H         LINE#         73
-  C:063EH         LINE#         74
-  C:0642H         LINE#         75
-  C:0648H         LINE#         77
+  C:04D2H         LINE#         62
+  C:04D2H         LINE#         63
+  C:04D2H         LINE#         65
+  C:04DAH         LINE#         66
+  C:04DDH         LINE#         67
+  C:04E1H         LINE#         68
+  C:04E9H         LINE#         69
+  C:04EDH         LINE#         70
+  C:04F1H         LINE#         71
+  C:04F5H         LINE#         72
+  C:04F8H         LINE#         73
+  C:0500H         LINE#         74
+  C:0504H         LINE#         75
+  C:050AH         LINE#         77
   -------         ENDPROC       GETACTIVATE
   -------         PROC          GETLOCK
   -------         DO            
   X:0083H         SYMBOL        lockCR
   -------         ENDDO         
-  C:0649H         LINE#         79
-  C:0649H         LINE#         80
-  C:0649H         LINE#         82
-  C:0651H         LINE#         83
-  C:0654H         LINE#         84
-  C:0658H         LINE#         85
-  C:0660H         LINE#         86
-  C:0664H         LINE#         87
-  C:0668H         LINE#         88
-  C:0670H         LINE#         89
-  C:0674H         LINE#         90
-  C:067AH         LINE#         92
+  C:050BH         LINE#         79
+  C:050BH         LINE#         80
+  C:050BH         LINE#         82
+  C:0513H         LINE#         83
+  C:0516H         LINE#         84
+  C:051AH         LINE#         85
+  C:0522H         LINE#         86
+  C:0526H         LINE#         87
+  C:052AH         LINE#         88
+  C:0532H         LINE#         89
+  C:0536H         LINE#         90
+  C:053CH         LINE#         92
   -------         ENDPROC       GETLOCK
   -------         PROC          GETUNLOCK
   -------         DO            
   X:008BH         SYMBOL        unlockCR
   -------         ENDDO         
-  C:067BH         LINE#         94
-  C:067BH         LINE#         95
-  C:067BH         LINE#         97
-  C:0683H         LINE#         98
-  C:0686H         LINE#         99
-  C:068AH         LINE#         100
-  C:0692H         LINE#         101
-  C:0696H         LINE#         102
-  C:069AH         LINE#         103
-  C:06A2H         LINE#         104
-  C:06A6H         LINE#         105
-  C:06ACH         LINE#         107
+  C:053DH         LINE#         94
+  C:053DH         LINE#         95
+  C:053DH         LINE#         97
+  C:0545H         LINE#         98
+  C:0548H         LINE#         99
+  C:054CH         LINE#         100
+  C:0554H         LINE#         101
+  C:0558H         LINE#         102
+  C:055CH         LINE#         103
+  C:0564H         LINE#         104
+  C:0568H         LINE#         105
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 11
+
+
+  C:056EH         LINE#         107
   -------         ENDPROC       GETUNLOCK
   -------         PROC          GETSUM
   -------         DO            
   X:0093H         SYMBOL        sumCard
   -------         ENDDO         
-  C:05CDH         LINE#         109
-  C:05CDH         LINE#         110
-  C:05CDH         LINE#         112
-  C:05D5H         LINE#         113
-  C:05D8H         LINE#         114
-  C:05DCH         LINE#         115
-  C:05E4H         LINE#         116
-  C:05E8H         LINE#         117
-  C:05ECH         LINE#         118
-  C:05EFH         LINE#         119
-  C:05F3H         LINE#         120
-  C:05F7H         LINE#         121
-  C:05FAH         LINE#         122
-  C:05FDH         LINE#         123
-  C:0605H         LINE#         124
-  C:0609H         LINE#         125
-  C:060FH         LINE#         127
+  C:048FH         LINE#         109
+  C:048FH         LINE#         110
+  C:048FH         LINE#         112
+  C:0497H         LINE#         113
+  C:049AH         LINE#         114
+  C:049EH         LINE#         115
+  C:04A6H         LINE#         116
+  C:04AAH         LINE#         117
+  C:04AEH         LINE#         118
+  C:04B1H         LINE#         119
+  C:04B5H         LINE#         120
+  C:04B9H         LINE#         121
+  C:04BCH         LINE#         122
+  C:04BFH         LINE#         123
+  C:04C7H         LINE#         124
+  C:04CBH         LINE#         125
+  C:04D1H         LINE#         127
   -------         ENDPROC       GETSUM
   -------         PROC          GETSTATUSCARD
   -------         DO            
   X:00A0H         SYMBOL        statusCard
   -------         ENDDO         
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 11
-
-
-  C:06DFH         LINE#         129
-  C:06DFH         LINE#         130
-  C:06DFH         LINE#         132
-  C:06E7H         LINE#         133
-  C:06EAH         LINE#         134
-  C:06EEH         LINE#         135
-  C:06F2H         LINE#         136
-  C:06F6H         LINE#         137
-  C:06FAH         LINE#         138
-  C:0702H         LINE#         139
-  C:0706H         LINE#         140
-  C:070CH         LINE#         142
+  C:05D0H         LINE#         129
+  C:05D0H         LINE#         130
+  C:05D0H         LINE#         132
+  C:05D8H         LINE#         133
+  C:05DBH         LINE#         134
+  C:05DFH         LINE#         135
+  C:05E3H         LINE#         136
+  C:05E7H         LINE#         137
+  C:05EBH         LINE#         138
+  C:05F3H         LINE#         139
+  C:05F7H         LINE#         140
+  C:05FDH         LINE#         142
   -------         ENDPROC       GETSTATUSCARD
   -------         PROC          _GETWRITESUM
   D:0006H         SYMBOL        sum
   -------         DO            
   X:00A8H         SYMBOL        cmdWrite
   -------         ENDDO         
-  C:0282H         LINE#         146
-  C:0282H         LINE#         147
-  C:0282H         LINE#         149
-  C:028AH         LINE#         150
-  C:028DH         LINE#         151
-  C:0291H         LINE#         152
-  C:0295H         LINE#         153
-  C:0299H         LINE#         154
-  C:029DH         LINE#         155
-  C:02A0H         LINE#         156
-  C:02A4H         LINE#         157
-  C:02A8H         LINE#         158
-  C:02ABH         LINE#         159
-  C:02AEH         LINE#         161
-  C:02B6H         LINE#         162
-  C:02BEH         LINE#         163
-  C:02C6H         LINE#         165
-  C:02CCH         LINE#         166
-  C:02D3H         LINE#         167
-  C:02DEH         LINE#         168
-  C:02E4H         LINE#         169
-  C:02E6H         LINE#         171
-  C:02EEH         LINE#         172
-  C:02FEH         LINE#         173
-  C:0304H         LINE#         179
+  C:0112H         LINE#         146
+  C:0112H         LINE#         147
+  C:0112H         LINE#         149
+  C:011AH         LINE#         150
+  C:011DH         LINE#         151
+  C:0121H         LINE#         152
+  C:0125H         LINE#         153
+  C:0129H         LINE#         154
+  C:012DH         LINE#         155
+  C:0130H         LINE#         156
+  C:0134H         LINE#         157
+  C:0138H         LINE#         158
+  C:013BH         LINE#         159
+  C:013EH         LINE#         161
+  C:0146H         LINE#         162
+  C:014EH         LINE#         163
+  C:0156H         LINE#         165
+  C:015CH         LINE#         166
+  C:0163H         LINE#         167
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 12
+
+
+  C:016EH         LINE#         168
+  C:0174H         LINE#         169
+  C:0176H         LINE#         171
+  C:017EH         LINE#         172
+  C:018EH         LINE#         173
+  C:0194H         LINE#         179
   -------         ENDPROC       _GETWRITESUM
   -------         PROC          GETPASSWORDSUM
-  D:001AH         SYMBOL        password
+  D:0017H         SYMBOL        password
   -------         DO            
   X:00C5H         SYMBOL        cmdPassword
   -------         ENDDO         
-  C:0387H         LINE#         182
-  C:0387H         LINE#         183
-  C:0387H         LINE#         185
-  C:038FH         LINE#         186
-  C:0392H         LINE#         187
-  C:0396H         LINE#         188
-  C:039EH         LINE#         189
-  C:03A2H         LINE#         190
-  C:03A6H         LINE#         191
-  C:03A9H         LINE#         192
-  C:03ADH         LINE#         193
-  C:03B0H         LINE#         194
-  C:03B4H         LINE#         195
-  C:03B8H         LINE#         197
-  C:03BCH         LINE#         198
-  C:03C0H         LINE#         199
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 12
-
-
-  C:03C4H         LINE#         200
-  C:03C8H         LINE#         201
-  C:03CCH         LINE#         202
-  C:03D0H         LINE#         204
-  C:03D8H         LINE#         205
-  C:03E8H         LINE#         206
-  C:03EEH         LINE#         211
+  C:0291H         LINE#         182
+  C:0291H         LINE#         183
+  C:0291H         LINE#         185
+  C:0299H         LINE#         186
+  C:029CH         LINE#         187
+  C:02A0H         LINE#         188
+  C:02A8H         LINE#         189
+  C:02ACH         LINE#         190
+  C:02B0H         LINE#         191
+  C:02B3H         LINE#         192
+  C:02B7H         LINE#         193
+  C:02BAH         LINE#         194
+  C:02BEH         LINE#         195
+  C:02C2H         LINE#         197
+  C:02C6H         LINE#         198
+  C:02CAH         LINE#         199
+  C:02CEH         LINE#         200
+  C:02D2H         LINE#         201
+  C:02D6H         LINE#         202
+  C:02DAH         LINE#         204
+  C:02E2H         LINE#         205
+  C:02F2H         LINE#         206
+  C:02F8H         LINE#         211
   -------         ENDPROC       GETPASSWORDSUM
   -------         ENDMOD        CMD_DATA
 
   -------         MODULE        CMD_INTERFACE
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:07D8H         PUBLIC        _setDecAnswerOperationCard
-  C:078AH         PUBLIC        _setWriteAnswerOperationCard
-  C:07B1H         PUBLIC        _setIncAnswerOperationCard
-  C:0542H         PUBLIC        _parsingCommandInterface
-  C:070DH         PUBLIC        _initAnswerSumCard
-  C:0872H         PUBLIC        _initAnswerOperationCard
-  C:06ADH         PUBLIC        _setAnswerSumCard
-  C:0821H         PUBLIC        _initInsertedCard
+  C:06F2H         PUBLIC        _setDecAnswerOperationCard
+  C:06A4H         PUBLIC        _setWriteAnswerOperationCard
+  C:06CBH         PUBLIC        _setIncAnswerOperationCard
+  C:0448H         PUBLIC        _parsingCommandInterface
+  C:05FEH         PUBLIC        _initAnswerSumCard
+  C:0764H         PUBLIC        _initAnswerOperationCard
+  C:074DH         PUBLIC        _parsingOperationSumCard
+  C:056FH         PUBLIC        _setAnswerSumCard
+  C:0003H         PUBLIC        _initInsertedCard
   X:00E2H         SYMBOL        HEAD_CONST
   -------         PROC          _INITINSERTEDCARD
   D:0001H         SYMBOL        insertedCard
-  C:0821H         LINE#         4
-  C:0821H         LINE#         5
-  C:0828H         LINE#         6
-  C:082FH         LINE#         7
-  C:0836H         LINE#         8
+  C:0003H         LINE#         4
+  C:0003H         LINE#         5
+  C:000AH         LINE#         6
+  C:0011H         LINE#         7
+  C:0018H         LINE#         8
   -------         ENDPROC       _INITINSERTEDCARD
   -------         PROC          _INITANSWERSUMCARD
   D:0001H         SYMBOL        answerSumCard
-  C:070DH         LINE#         13
-  C:070DH         LINE#         14
-  C:0714H         LINE#         15
-  C:071CH         LINE#         16
-  C:0724H         LINE#         17
-  C:072BH         LINE#         18
-  C:0732H         LINE#         19
+  C:05FEH         LINE#         13
+  C:05FEH         LINE#         14
+  C:0605H         LINE#         15
+  C:060DH         LINE#         16
+  C:0615H         LINE#         17
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 13
+
+
+  C:061CH         LINE#         18
+  C:0623H         LINE#         19
   -------         ENDPROC       _INITANSWERSUMCARD
   -------         PROC          _SETANSWERSUMCARD
-  D:0028H         SYMBOL        answerSumCard
+  D:0021H         SYMBOL        answerSumCard
   D:0004H         SYMBOL        sum
   -------         DO            
-  D:002BH         SYMBOL        sum16
+  D:0024H         SYMBOL        sum16
   -------         ENDDO         
-  C:06ADH         LINE#         24
-  C:06B3H         LINE#         26
-  C:06B7H         LINE#         27
-  C:06C5H         LINE#         28
-  C:06CDH         LINE#         29
+  C:056FH         LINE#         24
+  C:0575H         LINE#         26
+  C:0579H         LINE#         27
+  C:0587H         LINE#         28
+  C:058FH         LINE#         29
   -------         ENDPROC       _SETANSWERSUMCARD
   -------         PROC          _INITANSWEROPERATIONCARD
   D:0001H         SYMBOL        answerOperationCard
-  C:0872H         LINE#         33
-  C:0872H         LINE#         34
-  C:0872H         LINE#         35
-  C:0879H         LINE#         36
-  C:0881H         LINE#         37
+  C:0764H         LINE#         33
+  C:0764H         LINE#         34
+  C:0764H         LINE#         35
+  C:076BH         LINE#         36
+  C:0773H         LINE#         37
   -------         ENDPROC       _INITANSWEROPERATIONCARD
   -------         PROC          _SETWRITEANSWEROPERATIONCARD
-  D:0038H         SYMBOL        answerOperationCard
+  D:002DH         SYMBOL        answerOperationCard
   D:0005H         SYMBOL        err
-  C:078AH         LINE#         40
-  C:0790H         LINE#         41
-  C:0790H         LINE#         42
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 13
-
-
-  C:0797H         LINE#         43
-  C:079FH         LINE#         44
+  C:06A4H         LINE#         40
+  C:06AAH         LINE#         41
+  C:06AAH         LINE#         42
+  C:06B1H         LINE#         43
+  C:06B9H         LINE#         44
   -------         ENDPROC       _SETWRITEANSWEROPERATIONCARD
   -------         PROC          _SETINCANSWEROPERATIONCARD
-  D:003BH         SYMBOL        answerOperationCard
+  D:0030H         SYMBOL        answerOperationCard
   D:0005H         SYMBOL        err
-  C:07B1H         LINE#         47
-  C:07B7H         LINE#         48
-  C:07B7H         LINE#         49
-  C:07BEH         LINE#         50
-  C:07C6H         LINE#         51
+  C:06CBH         LINE#         47
+  C:06D1H         LINE#         48
+  C:06D1H         LINE#         49
+  C:06D8H         LINE#         50
+  C:06E0H         LINE#         51
   -------         ENDPROC       _SETINCANSWEROPERATIONCARD
   -------         PROC          _SETDECANSWEROPERATIONCARD
-  D:003EH         SYMBOL        answerOperationCard
+  D:0033H         SYMBOL        answerOperationCard
   D:0005H         SYMBOL        err
-  C:07D8H         LINE#         54
-  C:07DEH         LINE#         55
-  C:07DEH         LINE#         56
-  C:07E5H         LINE#         57
-  C:07EDH         LINE#         58
+  C:06F2H         LINE#         54
+  C:06F8H         LINE#         55
+  C:06F8H         LINE#         56
+  C:06FFH         LINE#         57
+  C:0707H         LINE#         58
   -------         ENDPROC       _SETDECANSWEROPERATIONCARD
   -------         PROC          _PARSINGCOMMANDINTERFACE
-  D:0031H         SYMBOL        dataCMD
-  D:0034H         SYMBOL        size
-  C:0542H         LINE#         61
-  C:054AH         LINE#         63
-  C:0555H         LINE#         64
-  C:0558H         LINE#         66
-  C:057EH         LINE#         67
-  C:0581H         LINE#         69
-  C:0588H         LINE#         70
+  D:000CH         SYMBOL        dataCMD
+  D:000FH         SYMBOL        size
+  C:0448H         LINE#         61
+  C:0450H         LINE#         63
+  C:045BH         LINE#         64
+  C:045EH         LINE#         66
+  C:0484H         LINE#         67
+  C:0487H         LINE#         69
+  C:048EH         LINE#         70
   -------         ENDPROC       _PARSINGCOMMANDINTERFACE
+  -------         PROC          _PARSINGOPERATIONSUMCARD
+  D:0001H         SYMBOL        dataCMD
+  -------         DO            
+  D:0036H         SYMBOL        sum
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 14
+
+
+  -------         ENDDO         
+  C:074DH         LINE#         72
+  C:074DH         LINE#         74
+  C:0755H         LINE#         75
+  C:075DH         LINE#         76
+  C:0763H         LINE#         77
+  -------         ENDPROC       _PARSINGOPERATIONSUMCARD
   -------         ENDMOD        CMD_INTERFACE
 
-  -------         MODULE        CRC_XOR
-  C:0000H         SYMBOL        _ICE_DUMMY_
-  C:07FFH         PUBLIC        _getCRC
-  X:00E3H         SYMBOL        HEAD_CONST
-  -------         PROC          _GETCRC
-  D:000CH         SYMBOL        d
-  D:0005H         SYMBOL        size
-  -------         DO            
-  D:0007H         SYMBOL        crc
-  D:0006H         SYMBOL        i
-  -------         ENDDO         
-  C:07FFH         LINE#         3
-  C:0805H         LINE#         4
-  C:0805H         LINE#         5
-  C:0807H         LINE#         7
-  C:080DH         LINE#         8
-  C:081DH         LINE#         9
-  C:0820H         LINE#         10
-  C:0820H         LINE#         11
-  -------         ENDPROC       _GETCRC
-  -------         ENDMOD        CRC_XOR
-
-  -------         MODULE        ?C?COPY
-  C:0156H         PUBLIC        ?C?COPY
-  -------         ENDMOD        ?C?COPY
-
   -------         MODULE        ?C?CLDPTR
-  C:017CH         PUBLIC        ?C?CLDPTR
+  C:0217H         PUBLIC        ?C?CLDPTR
   -------         ENDMOD        ?C?CLDPTR
 
   -------         MODULE        ?C?CLDOPTR
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 14
-
-
-  C:0195H         PUBLIC        ?C?CLDOPTR
+  C:0230H         PUBLIC        ?C?CLDOPTR
   -------         ENDMOD        ?C?CLDOPTR
 
   -------         MODULE        ?C?CSTPTR
-  C:01C2H         PUBLIC        ?C?CSTPTR
+  C:025DH         PUBLIC        ?C?CSTPTR
   -------         ENDMOD        ?C?CSTPTR
 
   -------         MODULE        ?C?CSTOPTR
-  C:01D4H         PUBLIC        ?C?CSTOPTR
+  C:026FH         PUBLIC        ?C?CSTOPTR
   -------         ENDMOD        ?C?CSTOPTR
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -902,6 +916,9 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?SENDTOINTERFACE?MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDTOCARDREADER?MAIN
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_GETNUMBERCARD?CMD_DATA
@@ -916,6 +933,12 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
     SEGMENT: ?PR?GETACTIVATE?CMD_DATA
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GETLOCK?CMD_DATA
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GETUNLOCK?CMD_DATA
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?GETSUM?CMD_DATA
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -928,6 +951,9 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
     SEGMENT: ?PR?GETPASSWORDSUM?CMD_DATA
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 15
+
+
     SEGMENT: ?PR?_INITINSERTEDCARD?CMD_INTERFACE
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -949,10 +975,64 @@ SYMBOL TABLE OF MODULE:  H:\My Project\T-Card\T-CARD_MK\CAR_CONTROL (CONFIG)
     SEGMENT: ?PR?_SETDECANSWEROPERATIONCARD?CMD_INTERFACE
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PARSINGCOMMANDINTERFACE?CMD_INTERFACE
+    SEGMENT: ?PR?_PARSINGOPERATIONSUMCARD?CMD_INTERFACE
 
-BL51 BANKED LINKER/LOCATER V6.22            12/22/2019  23:40:09  PAGE 15
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\CMD_data.obj (CMD_DATA)
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\CMD_data.obj (CMD_DATA)
+    ADDRESS: 0333H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\CMD_data.obj (CMD_DATA)
+    ADDRESS: 0187H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\CMD_data.obj (CMD_DATA)
+    ADDRESS: 02EBH
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+    ADDRESS: 0592H
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+    ADDRESS: 06BCH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+    ADDRESS: 06E3H
+
+BL51 BANKED LINKER/LOCATER V6.22            12/23/2019  00:34:19  PAGE 16
 
 
-Program Size: data=65.5 xdata=228 code=2304
-LINK/LOCATE RUN COMPLETE.  18 WARNING(S),  0 ERROR(S)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+    ADDRESS: 070AH
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _GETCRC
+    MODULE:  H:\My Project\T-Card\T-CARD_MK\Main\cmd_interface.obj (CMD_INTERF
+>> ACE)
+    ADDRESS: 0469H
+
+Program Size: data=56.5 xdata=227 code=2036
+LINK/LOCATE RUN COMPLETE.  31 WARNING(S),  0 ERROR(S)
