@@ -1,5 +1,6 @@
 #include "config.h"
-#include "CMD_data.h"  
+#include "CMD_data.h" 
+#include "cmd_interface.h"
 
 
 void sendToCardReader(uint8_t* d, uint8_t size);

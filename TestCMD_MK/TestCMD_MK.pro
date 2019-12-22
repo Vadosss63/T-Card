@@ -17,10 +17,16 @@ win32:DEPENDPATH += ../T-CARD_MK/Main/
 
 SOURCES += \
         ../T-CARD_MK/Main/CMD_data.c \
+        ../T-CARD_MK/Main/cmd_interface.c \
+        ../T-CARD_MK/Main/crc_xor.c \
+        testinterface.c \
         main.c
 
 HEADERS += \
     ../T-CARD_MK/Main/CMD_data.h \
-    ../T-CARD_MK/Main/InitType.h
+    ../T-CARD_MK/Main/InitType.h \
+    ../T-CARD_MK/Main/cmd_interface.h \
+    ../T-CARD_MK/Main/crc_xor.h \
+    testinterface.h
 
 

@@ -1,7 +1,11 @@
-#ifndef _CMD_H      
-#define _CMD_H
+#ifndef CMD_H
+#define CMD_H
 
 #include "InitType.h"
+#include "crc_xor.h"
+// Надо создать инициализационные
+// функции для каждой из структур
+
 
 static uint8_t xdata CMD_OK = 0x06;
 static uint8_t xdata CMD_STX = 0xF2;
@@ -14,8 +18,7 @@ static uint8_t xdata CMD_N = 0x4E;
 // Вспомогательный класс
 static ToUint16 xdata convert;
 
-// Расчет CRC
-extern uint8_t getCRC(uint8_t* d, uint8_t size);
+
 // Получение номера карточки
 extern NumderCard getNumberCard(uint8_t* d);
 // Блокировка картридера

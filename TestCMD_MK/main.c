@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "CMD_data.h"
+#include "testinterface.h"
 
 void printData(uint8_t* data, uint8_t size){
     printf("Print data\n");
@@ -43,12 +44,15 @@ void testGetPasswordSum(PasswordCard password)
 
 int main()
 {    
-//    PasswordCard password;
-//    password.b16[0] = 0xFFFF;
-//    password.b16[1] = 0xFFFF;
-//    password.b16[2] = 0xFFFF;
-//    testGetPasswordSum(password);
-    StatusCard statusCard = getStatusCard();
-     bit val = isValidData(statusCard.b, sizeof(statusCard));
+    //    PasswordCard password;
+    //    password.b16[0] = 0xFFFF;
+    //    password.b16[1] = 0xFFFF;
+    //    password.b16[2] = 0xFFFF;
+    //    testGetPasswordSum(password);
+    //    StatusCard statusCard = getStatusCard();
+    //    bit val = isValidData(statusCard.b, sizeof(statusCard));
+
+    TEST_parsingCommandInterface();
+    TEST_initCommandInterface();
     return 0;
 }
