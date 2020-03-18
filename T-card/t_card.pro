@@ -10,13 +10,23 @@ SOURCES += main.cpp\
     UtilityUWB/errorcodeboost.cpp \
     UtilityUWB/serialport.cpp \
         mainwindow.cpp \
-    port.cpp
+    port.cpp \
+    rfid/MFRC522.cpp \
+    rfid/ReadAndWrite.cpp \
+    rfid/callback.cpp \
+    rfid/mfrc.cpp
 
 HEADERS += mainwindow.h \
     CMD_data.h \
     UtilityUWB/errorcodeboost.h \
     UtilityUWB/serialport.h \
-    port.h
+    port.h \
+    rfid/MFRC522.h \
+    rfid/ReadAndWrite.h \
+    rfid/callback.h \
+    rfid/deprecated.h \
+    rfid/mfrc.h \
+    rfid/require_cpp11.h
 
 FORMS += mainwindow.ui
 

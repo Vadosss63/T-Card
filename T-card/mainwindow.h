@@ -6,6 +6,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include "port.h"
+#include "rfid/ReadAndWrite.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,7 @@ public:
 
 signals:
     void saveSettings(QString name, int baudrate);
+    void print(const QString& data);
 
 private slots:
 
@@ -29,7 +31,7 @@ private slots:
     void connectToPort();
 
     void setBaudRate(int idx);
-    void print(const QString& data);
+
     // Команды управления
     void activateBtn();
     void lockBtn();
@@ -39,6 +41,16 @@ private slots:
     void decBtn();
     void incBtn();
     void checkStatusBtn();
+    void sendDataBtn();
+    void InitBtn();
+    void TestConnect();
+    void TestBtn();
+
+    void readDataFromPort();
+
+    void printConsole(const QString& data);
+
+    void setTimeoutSendData();
 
 private:
 
@@ -55,6 +67,17 @@ private:
     Ui::MainWindow *ui;
 
     uint16_t getSumFromCard();
+
+    uint16_t m_timeoutForSendData = 30;
+
+    MFRC522Test m_MFRC522Test;
+    std::vector<uint8_t> m_dataAnswer;
+    bool m_isReady = false;
+    std::condition_variable m_dataReady;
+    std::mutex mtx;
+    std::thread m_thread;
+    std::mutex m_printMutex;
 };
+
 
 #endif // MAINWINDOW_H

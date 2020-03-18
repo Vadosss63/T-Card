@@ -11,6 +11,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CMD_data.h"
+#include "rfid/callback.h"
+#include "rfid/mfrc.h"
+
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -24,6 +27,12 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->DecBtn, SIGNAL(clicked()), this, SLOT(decBtn()));
     connect(ui->IncBtn, SIGNAL(clicked()), this, SLOT(incBtn()));
     connect(ui->CheckStatusBtn, SIGNAL(clicked()), this, SLOT(checkStatusBtn()));
+    connect(ui->SendDataBtn, SIGNAL(clicked()), this, SLOT(sendDataBtn()));
+    connect(ui->initBtn, SIGNAL(clicked()), this, SLOT(InitBtn()));
+    connect(ui->TestBtn, SIGNAL(clicked()), this, SLOT(TestConnect()));
+    connect(ui->SetTimeoutBtn, SIGNAL(clicked()), this, SLOT(setTimeoutSendData()));
+
+    connect(this, SIGNAL(print(QString)), SLOT(printConsole(QString)), Qt::QueuedConnection);
 
     connect(ui->BaudRateBox, SIGNAL(currentIndexChanged(int)) ,this, SLOT(setBaudRate(int)));
     ui->BaudRateBox->addItem(QLatin1String("9600"), QSerialPort::Baud9600);
@@ -34,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     m_port = new Port(this);
-    connect(m_port, SIGNAL(error_(QString)), this, SLOT(print(QString)));
+    connect(m_port, SIGNAL(error_(QString)), this, SIGNAL(print(QString)));
+    connect(m_port, SIGNAL(readyData()), this, SLOT(readDataFromPort()));
 
     // Слот - ввод настроек!
     connect(this, SIGNAL(saveSettings(QString, int)), m_port, SLOT(writeSettingsPort(QString, int)));
@@ -46,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 MainWindow::~MainWindow()
 {
     delete ui;
+    if(m_thread.joinable())
+        m_thread.join();
 }
 
 void MainWindow::searchPort()
@@ -66,12 +78,6 @@ void MainWindow::setBaudRate(int idx)
     }
 }
 
-void MainWindow::print(const QString& data)
-{
-    ui->consol->textCursor().insertText(data + '\r'); // Вывод текста в консоль
-    ui->consol->moveCursor(QTextCursor::End); //Scroll
-}
-
 void MainWindow::writeSettings()
 {
     emit saveSettings(ui->PortNameBox->currentText(), ui->BaudRateBox->currentText().toInt());
@@ -81,6 +87,7 @@ void MainWindow::connectToPort()
 {
     writeSettings();
     m_port->connectPort();
+    m_port->AsincRead();
 }
 
 void MainWindow::activateBtn()
@@ -198,26 +205,143 @@ void MainWindow::checkStatusBtn()
     m_port->writeToPort(CMD::getStatusCard());
     printSendData(CMD::getStatusCard());
     //m_port->readInPort(1);
-//    std::vector<uint8_t> data = m_port->getDataAnswer();
-//    //m_port->getData(data);
-//    printReadData(data);
-////    m_port->readInPort(12);
-////    m_port->getData(data);
-////    printReadData(data);
+    //    std::vector<uint8_t> data = m_port->getDataAnswer();
+    //    //m_port->getData(data);
+    //    printReadData(data);
+    ////    m_port->readInPort(12);
+    ////    m_port->getData(data);
+    ////    printReadData(data);
 
-//    data = m_port->getDataAnswer();
-//    printReadData(data);
+    //    data = m_port->getDataAnswer();
+    //    printReadData(data);
 
-//    if(CMD::checkStatusCard(data))
-//    {
-//        ui->StatusCardLabel->setText("Card ok");
-//        ui->OperationCardGB->setEnabled(true);
-//    }
-//    else
-//    {
-//        ui->StatusCardLabel->setText("No card");
-//        ui->OperationCardGB->setEnabled(false);
-//    }
+    //    if(CMD::checkStatusCard(data))
+    //    {
+    //        ui->StatusCardLabel->setText("Card ok");
+    //        ui->OperationCardGB->setEnabled(true);
+    //    }
+    //    else
+    //    {
+    //        ui->StatusCardLabel->setText("No card");
+    //        ui->OperationCardGB->setEnabled(false);
+    //    }
+}
+
+void MainWindow::sendDataBtn()
+{
+    print("sendDataBtn");
+    QString data = ui->send_data->text();
+    QStringList sl = data.split("0x", QString::SkipEmptyParts);
+
+    std::vector<uint8_t> dataByte(sl.size());
+    bool ok;
+    for (size_t i = 0; i < sl.size(); ++i) {
+
+        dataByte[i] = sl[i].toInt(&ok, 16);
+    }
+    ok = false;
+    m_port->writeToPort(dataByte);
+    printSendData(dataByte);
+}
+
+void MainWindow::InitBtn()
+{
+    //    m_MFRC522Test.setCallbackWrite([this](std::vector<uint8_t> && data){
+    //        m_port->writeToPort(data);
+    //        std::this_thread::sleep_for(std::chrono::microseconds(m_timeoutForSendData));
+    //        printSendData(data);
+    //    });
+
+    //    m_MFRC522Test.setCallbackRead([this](std::vector<uint8_t> && data)
+    //    {
+    //        m_isReady = false;
+    //        m_port->writeToPort(data);
+    //        printSendData(data);
+    //        std::unique_lock<std::mutex> lck(mtx);
+    //        m_dataReady.wait_for(lck, std::chrono::milliseconds(20));
+    //        std::this_thread::sleep_for(std::chrono::microseconds(m_timeoutForSendData));
+    //        return m_dataAnswer;
+    //    });
+
+    //    if(m_thread.joinable())
+    //        m_thread.join();
+    //    m_thread = std::thread([this](){
+    //        //        m_MFRC522Test.setsup();
+    //        m_MFRC522Test.initConnect();
+    //    });
+
+    setCallbackWrite([this](std::vector<uint8_t> && data){
+        m_port->writeToPort(data);
+        std::this_thread::sleep_for(std::chrono::microseconds(m_timeoutForSendData));
+        printSendData(data);
+    });
+
+    setCallbackRead([this](std::vector<uint8_t> && data)
+    {
+        m_isReady = false;
+        m_port->writeToPort(data);
+        printSendData(data);
+        std::unique_lock<std::mutex> lck(mtx);
+        m_dataReady.wait_for(lck, std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::microseconds(m_timeoutForSendData));
+        return m_dataAnswer;
+    });
+
+    if(m_thread.joinable())
+        m_thread.join();
+    m_thread = std::thread(&TM_MFRC522_Init);
+
+}
+
+void MainWindow::TestConnect()
+{
+    if(m_thread.joinable())
+        m_thread.join();
+
+    m_thread = std::thread([](){
+        //        m_MFRC522Test.findCard();
+        uint8_t id[5];
+        if(MI_OK == TM_MFRC522_Check(id)){
+            for(auto val:id)
+                std::cout << std::hex <<  val << " ";
+            std::cout << std::endl;
+        }
+    });
+}
+
+void MainWindow::TestBtn()
+{
+    //    m_MFRC522Test.PICC_IsNewCardPresent();
+    if(m_thread.joinable())
+        m_thread.join();
+
+    m_thread = std::thread([this](){
+        bool b =  m_MFRC522Test.PICC_IsNewCardPresent();
+        emit print(b ? "true" : "false");
+    });
+
+}
+
+void MainWindow::readDataFromPort()
+{
+    std::vector<uint8_t> dataAnswer;
+    m_port->getData(dataAnswer);
+    m_dataAnswer = dataAnswer;
+    m_isReady = true;
+    m_dataReady.notify_one();
+    printReadData(dataAnswer);
+}
+
+void MainWindow::printConsole(const QString &data)
+{
+    std::lock_guard<std::mutex> l(m_printMutex);
+    ui->consol->textCursor().insertText(data + '\r'); // Вывод текста в консоль
+    ui->consol->moveCursor(QTextCursor::End); //Scroll
+}
+
+void MainWindow::setTimeoutSendData()
+{
+    m_timeoutForSendData = static_cast<uint16_t>(ui->TimeoutSendBox->value());
 }
 
 void MainWindow::showNumberCard(const QString& number)
@@ -238,7 +362,8 @@ void MainWindow::printReadData(const std::vector<uint8_t>& data)
 
 void MainWindow::printSendData(const std::vector<uint8_t>& data)
 {
-    qDebug("printSendData");
+    QString m = convertToString(data);
+    qDebug(m.toStdString().c_str());
     print("Send:" +  convertToString(data));
 }
 
@@ -283,3 +408,6 @@ uint16_t MainWindow::getSumFromCard()
     printReadData(data);
     return CMD::convertToInt(CMD::getSumCard(data));
 }
+
+
+

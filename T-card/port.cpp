@@ -6,7 +6,9 @@
 
 Port::Port(QObject *parent): QObject(parent){}
 
-Port::~Port(){}
+Port::~Port(){
+    m_port.StopIO();
+}
 
 void Port::writeToPort(const std::vector<uint8_t>& data){
     if(m_port.IsOpen()){
@@ -20,11 +22,16 @@ void Port::getData(std::vector<uint8_t> &data){
     data = std::move(m_data);
 }
 
-std::vector<uint8_t> Port::getDataAnswer()
+
+void Port::AsincRead()
 {
-    std::vector<uint8_t> data;
-    m_port.ReadAnswer(data);
-    return data;
+    if(!m_port.IsOpen()) return;
+
+    m_port.SetCallback([this](std::vector<uint8_t>&& data){
+        m_data = std::move(data);
+        emit readyData();
+    });
+    m_port.StartIO();
 }
 
 void Port::writeSettingsPort(QString name, int baudrate){
@@ -39,6 +46,7 @@ void Port::checkErrors(){
 }
 
 void Port::connectPort(){
+
     if(m_port.Open(m_settingsPort.name.toStdString()))
     {
         m_port.SetBaudRate(m_settingsPort.baudRate);
@@ -48,8 +56,10 @@ void Port::connectPort(){
 }
 
 void Port::disconnectPort(){
+
     if(m_port.Close())
     {
+        m_port.StopIO();
         error_(m_settingsPort.name.toLocal8Bit() + " >> Закрыт!\r");
     }else{
         checkErrors();

@@ -74,24 +74,62 @@ bool RSHandler::ReadAnswer(std::vector<uint8_t> &answer) noexcept
 {
     ClearErrors();
     answer.resize(0);
-    uint8_t countIteration = 0;
-    while (countIteration < 2) {
-        if(!IsNoError())
-            return false;
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    if(!IsNoError())
+        return false;
+    size_t size = m_serialPort.read_some(boost::asio::buffer(m_readData.data(), m_readData.size()), GetErrors());
+    answer.insert(answer.end(), m_readData.begin(), m_readData.begin() + size);
+    std::cout << "size recive - " << size << "; count data - " << answer.size() << std::endl;
 
-        size_t size = m_serialPort.read_some(boost::asio::buffer(m_readData.data(), m_readData.size()), GetErrors());
-        std::cout << "size recive - " << size << "; count data - " << answer.size() << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        if(size == 0){
-            countIteration++;
-        }
-        else
-        {
-            answer.insert(answer.end(), m_readData.begin(), m_readData.begin() + size);
-        }
-    }
     std::cout << "================================" << std::endl;
     return IsNoError();
+}
+
+void RSHandler::SetCallback(std::function<void(std::vector<uint8_t>&&)> callback)
+{
+    m_callback = callback;
+}
+
+void RSHandler::AsyncReadSome()
+{
+    if (!m_serialPort.is_open()) return;
+
+    m_serialPort.async_read_some(
+                boost::asio::buffer(m_readData.data() , m_readData.size()),
+                boost::bind(&RSHandler::OnReceive,
+                            this, boost::asio::placeholders::error,
+                            boost::asio::placeholders::bytes_transferred));
+}
+
+void RSHandler::StartIO()
+{
+    boost::thread t(boost::bind(&boost::asio::io_service::run, &m_ioService));
+    AsyncReadSome();
+}
+
+void RSHandler::StopIO()
+{
+    std::lock_guard<std::mutex> look(m_mutex);
+
+    if (m_serialPort.is_open()) {
+        m_serialPort.cancel();
+        m_serialPort.close();
+    }
+    m_ioService.stop();
+    m_ioService.reset();
+}
+
+void RSHandler::OnReceive(const ErrorCode &ec, size_t bytes_transferred)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (!m_serialPort.is_open()) return;
+    if (ec) {
+        AsyncReadSome();
+        return;
+    }
+    std::vector<uint8_t> tmp(m_readData.begin(), m_readData.begin() + bytes_transferred);
+    m_callback(std::move(tmp));
+    AsyncReadSome();
 }
 
 }

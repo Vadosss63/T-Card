@@ -24,6 +24,7 @@ public:
     void getData(std::vector<uint8_t>& data);
 
     std::vector<uint8_t> getDataAnswer();
+    void AsincRead();
 
 
 signals:
