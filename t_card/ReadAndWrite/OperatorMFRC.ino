@@ -18,17 +18,18 @@ void OperatorMFRC::init()
 
 bool OperatorMFRC::checkCard()
 {
+  if(isInitNewCard) return true;
   // Ждем новую карту
   if (!mfrc522.PICC_IsNewCardPresent())
   {
-    //Serial.println(F("No IsNewCardPresent:"));
+    end();
     return false;
   }
 
   // Выбираем одну из карт
   if ( ! mfrc522.PICC_ReadCardSerial())
   {
-    //Serial.println(F("No ReadCardSerial:"));
+    end();
     return false;
   }
   // Показываем подробности карты
@@ -40,6 +41,7 @@ bool OperatorMFRC::checkCard()
   if (piccType != MFRC522::PICC_TYPE_MIFARE_1K)
     return false;
   setupPwdId();
+  isInitNewCard = true;
   return true;
 }
 
@@ -47,6 +49,7 @@ void OperatorMFRC::end()
 {
   mfrc522.PICC_HaltA();
   mfrc522.PCD_StopCrypto1();
+  isInitNewCard = false;
 }
 
 uint16_t OperatorMFRC::readSumFromCard()
@@ -65,21 +68,25 @@ uint16_t OperatorMFRC::readSumFromCard()
   return 0;
 }
 
-void OperatorMFRC::writeSumToCard(uint16_t sum)
+bool OperatorMFRC::writeSumToCard(uint16_t sum)
 {
   byte b0 = 0xFF & (sum >> 8);
   byte b1 = 0xFF &  sum;
   writeBuffer[0] = b0;
   writeBuffer[1] = b1;
   addCRCToSum();
+  bool ok = true;
   if (!writeAndCheck(SUM1))
   {
-    Serial.println(F("Erroe write"));
+//    Serial.println(F("Erroe write"));
+    ok = false;
   }
   if (!writeAndCheck(SUM2))
   {
-    Serial.println(F("Erroe write"));
+//    Serial.println(F("Erroe write"));
+    ok = false;
   }
+  return ok;
 }
 
 void OperatorMFRC::dump_byte_array(byte *buffer, byte bufferSize) {
@@ -172,8 +179,9 @@ inline void OperatorMFRC::readFromCard() {
 bool OperatorMFRC::checkStatus()
 {
   if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("Error: "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
+//    Serial.print(F("Error: "));
+//    Serial.println(mfrc522.GetStatusCodeName(status));
+    end();
     return false;
   }
   return true;

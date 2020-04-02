@@ -23,7 +23,7 @@ class OperatorMFRC
 
     uint16_t readSumFromCard();
 
-    void writeSumToCard(uint16_t sum);
+    bool writeSumToCard(uint16_t sum);
 
     static void dump_byte_array(byte *buffer, byte bufferSize);
 
@@ -73,6 +73,8 @@ class OperatorMFRC
     byte status;
     byte readBuffer[18];
     byte size = sizeof(readBuffer);
+
+    bool isInitNewCard = false;
 
 };
 

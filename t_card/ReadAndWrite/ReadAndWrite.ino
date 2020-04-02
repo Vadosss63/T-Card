@@ -28,7 +28,7 @@ class OperatorCommad
       execute();
       sendAnswer();
       //Завершаем Операции
-      operatorMFRC.end();
+      //operatorMFRC.end();
     }
 
   private:
@@ -55,21 +55,25 @@ class OperatorCommad
     void execute()
     {
       writeAnswerBuf = "";
-      if (! operatorMFRC.checkCard())
-      {
-        Serial.println(F("No card"));
-        return;
-      }
+      noError = operatorMFRC.checkCard();
+
       switch (parserCommand.cmd)
       {
         case READ_SUM:
-          readSumFromCard();
+          if (noError)
+            readSumFromCard();
           break;
         case WRITE_SUM:
-          writeSumToCard();
+          if (noError)
+            writeSumToCard();
           break;
         case ERROR_CMD:
           break;
+      }
+      if (!noError)
+      {
+//        Serial.println("Add 0");
+        parserCommand.sum = 0;
       }
 
       writeAnswerBuf = parserCommand.convertToString();
@@ -78,30 +82,31 @@ class OperatorCommad
     // Отправка ответа
     void sendAnswer()
     {
-      Serial.println(F("Answer "));
+//      Serial.println(F("Answer "));
       Serial.print(writeAnswerBuf);
     }
 
     uint16_t readSumFromCard()
     {
       uint16_t  s = operatorMFRC.readSumFromCard();
-      Serial.println(F("Summa = "));
-      Serial.println(s);
+      //      Serial.println(F("Summa = "));
+      //      Serial.println(s);
       parserCommand.sum = s;
     }
 
     void writeSumToCard()
     {
       uint16_t sum = parserCommand.sum;
-      operatorMFRC.writeSumToCard(sum);
-      Serial.println(sum);
+      noError =  operatorMFRC.writeSumToCard(sum);
+      //
+      //      Serial.println(sum);
     }
-
 
     OperatorMFRC operatorMFRC;
     ParserCommand parserCommand;
     String readCmdBuf;
     String writeAnswerBuf;
+    bool noError;
 };
 
 

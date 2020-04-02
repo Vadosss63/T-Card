@@ -75,7 +75,7 @@ std::vector<uint8_t> getWriteSum(uint16_t sum)
 std::vector<uint8_t> getSum()
 {
     return std::vector<uint8_t>{STX, 0x00, 0x08, C, 0x60, 0x33,
-                0x00, 0xB0, 0x02, 0x00, 0x01, ETX, 0x5A};
+                                0x00, 0xB0, 0x02, 0x00, 0x01, ETX, 0x5A};
 }
 
 std::vector<uint8_t> getStatusCard()
@@ -87,7 +87,7 @@ bool checkStatusCard(std::vector<uint8_t>& data)
 {
     if(data.size() < 5)
         return false;
-    return data[3] == P;
+    return   data[3] == P;
 }
 
 };
