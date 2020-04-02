@@ -19,13 +19,18 @@ void OperatorMFRC::init()
 bool OperatorMFRC::checkCard()
 {
   // Ждем новую карту
-  if ( ! mfrc522.PICC_IsNewCardPresent())
+  if (!mfrc522.PICC_IsNewCardPresent())
+  {
+    //Serial.println(F("No IsNewCardPresent:"));
     return false;
+  }
 
   // Выбираем одну из карт
   if ( ! mfrc522.PICC_ReadCardSerial())
+  {
+    //Serial.println(F("No ReadCardSerial:"));
     return false;
-
+  }
   // Показываем подробности карты
   Serial.print(F("Card UID:"));
   dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
