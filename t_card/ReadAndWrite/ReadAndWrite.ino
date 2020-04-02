@@ -27,13 +27,8 @@ class OperatorCommad
       parsingCMD();
       execute();
       sendAnswer();
-
-      //      // Проверяем наличие карты
-      //      if (! operatorMFRC.checkCard())
-      //        return;
-
-      //      //Завершаем Операции
-      //      operatorMFRC.end();
+      //Завершаем Операции
+      operatorMFRC.end();
     }
 
   private:
@@ -59,21 +54,26 @@ class OperatorCommad
     // выполнение команды
     void execute()
     {
+      writeAnswerBuf = "";
+      if (! operatorMFRC.checkCard())
+      {
+        Serial.println(F("No card"));
+        return;
+      }
+      switch (parserCommand.cmd)
+      {
+        case READ_SUM:
+          readSumFromCard();
+          break;
+        case WRITE_SUM:
+          writeSumToCard();
+          break;
+        case ERROR_CMD:
+          break;
+      }
 
-      Serial.println(F("CMD "));
-      Serial.println(parserCommand.cmd);
-      Serial.println(F("CRC "));
-      Serial.println(parserCommand.crc, HEX);
-      Serial.println(F("SUM "));
-      Serial.println(parserCommand.sum);
-      
       writeAnswerBuf = parserCommand.convertToString();
-      //      switch(parserCommand.cmd)
-      //      {
-      //      case ERROR_CMD:
-      //        writeAnswerBuf = readCmdBuf;
-      //        break;
-      //      }
+
     }
     // Отправка ответа
     void sendAnswer()
@@ -87,10 +87,12 @@ class OperatorCommad
       uint16_t  s = operatorMFRC.readSumFromCard();
       Serial.println(F("Summa = "));
       Serial.println(s);
+      parserCommand.sum = s;
     }
 
-    void writeSumToCard(uint16_t sum)
+    void writeSumToCard()
     {
+      uint16_t sum = parserCommand.sum;
       operatorMFRC.writeSumToCard(sum);
       Serial.println(sum);
     }
@@ -101,6 +103,7 @@ class OperatorCommad
     String readCmdBuf;
     String writeAnswerBuf;
 };
+
 
 OperatorCommad operatorCommad;
 

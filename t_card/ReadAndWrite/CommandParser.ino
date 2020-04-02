@@ -32,36 +32,27 @@ String ParserCommand::convertToString()
   switch (cmd)
   {
     case READ_SUM:
-      {
         answer += READ_ANSWER;
-        String sumStr(sum);
-
         break;
-      }
+        
     case WRITE_SUM:
-      {
         answer += WRITE_ANSWER;
-        String sumStr(sum);
-        for (uint8_t i = 4; i != 0; --i)
-        {
-          if (i - 1 < sumStr.length())
-          {
-            answer += sumStr.charAt(i - 1);
-          }
-          else
-          {
-            answer += "0";
-          }
-        }
-        answer += "000";
-        answer += culcAnswerCRC(answer);
-        answer += "\r\n";
         break;
-      }
     default:
       return answer;
-
   }
+
+  String sumStr(sum);
+  for (uint8_t i = 4; i != 0; --i)
+  {
+    if (i - 1 < sumStr.length())
+      answer += sumStr.charAt(i - 1);
+    else
+      answer += "0";
+  }
+  answer += "000";
+  answer += culcAnswerCRC(answer);
+  answer += "\r\n";
   return answer;
 }
 
@@ -77,14 +68,14 @@ String ParserCommand::culcAnswerCRC(const String& valStr)
   uint16_t crcL = 256 - toUint8(valStr.substring(1, 3));
   String sumStr(sum);
   uint8_t len = 4 - sumStr.length();
-  while(len)
+  while (len)
   {
     sumStr = "0" + sumStr;
     --len;
   }
   crcL -= toUint8(sumStr.substring(0, 2));
   crcL -= toUint8(sumStr.substring(2, 4));
-  
+
   String crcStr = String(crcL, HEX);
   crcStr.toUpperCase();
   return crcStr;
