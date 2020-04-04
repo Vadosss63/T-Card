@@ -1,5 +1,5 @@
-#ifndef COMMANDPARSER_H
-#define COMMANDPARSER_H
+#ifndef COMMAND_PARSER_H
+#define COMMAND_PARSER_H
 
 enum Command
 {

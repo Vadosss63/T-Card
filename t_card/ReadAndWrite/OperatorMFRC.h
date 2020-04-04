@@ -1,5 +1,5 @@
-#ifndef OPERATORMFRC_H
-#define OPERATORMFRC_H
+#ifndef OPERATOR_MFRC_H
+#define OPERATOR_MFRC_H
 
 class OperatorMFRC
 {
