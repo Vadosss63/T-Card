@@ -29,8 +29,8 @@ struct ParserCommand
     String convertToString();
 
   private:
-    void culcRequestCRC(const String& valStr);
-    String culcAnswerCRC(const String& valStr);
+    void calcRequestCRC(const String& valStr);
+    String calcAnswerCRC(const String& valStr);
 
     bool checkCRCRequest(const String& valStr);
 

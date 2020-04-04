@@ -6,7 +6,7 @@ void ParserCommand::convertFormString(const String& cmdStr)
   if (c.equals(READ))
   {
     cmd = READ_SUM;
-    culcRequestCRC(cmdStr);
+    calcRequestCRC(cmdStr);
     if (!checkCRCRequest(cmdStr.substring(crcId, crcId + 2)))
       cmd = ERROR_CMD;
     return;
@@ -15,7 +15,7 @@ void ParserCommand::convertFormString(const String& cmdStr)
   if (c.equals(WRITE))
   {
     cmd = WRITE_SUM;
-    culcRequestCRC(cmdStr);
+    calcRequestCRC(cmdStr);
     if (checkCRCRequest(cmdStr.substring(crcId, crcId + 2)))
       sum = toUint16(cmdStr.substring(sumId, sumId + 4));
     else
@@ -51,19 +51,19 @@ String ParserCommand::convertToString()
       answer += "0";
   }
   answer += "000";
-  answer += culcAnswerCRC(answer);
+  answer += calcAnswerCRC(answer);
   answer += "\r\n";
   return answer;
 }
 
-void ParserCommand::culcRequestCRC(const String& valStr)
+void ParserCommand::calcRequestCRC(const String& valStr)
 {
   crc = 256;
   for (uint8_t i = 1; i < crcId; i += 2)
     crc -= toUint8(valStr.substring(i, i + 2));
 }
 
-String ParserCommand::culcAnswerCRC(const String& valStr)
+String ParserCommand::calcAnswerCRC(const String& valStr)
 {
   uint16_t crcL = 256 - toUint8(valStr.substring(1, 3));
   String sumStr(sum);
