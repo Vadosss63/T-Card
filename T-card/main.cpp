@@ -2,8 +2,6 @@
 #include <QTextCodec>
 
 #include <QApplication>
-#include "CMD_data.h"
-
 
 int main(int argc, char *argv[])
 {

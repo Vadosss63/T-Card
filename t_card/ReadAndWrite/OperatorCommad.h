@@ -1,5 +1,6 @@
 #ifndef OPERATOR_COMMAND_H
 #define OPERATOR_COMMAND_H
+
 #include "CommandParser.h"
 #include "OperatorMFRC.h"
 
