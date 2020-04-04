@@ -1,6 +1,6 @@
 #include "OperatorMFRC.h"
 
-OperatorMFRC::OperatorMFRC() : mfrc522(SS_PIN, RST_PIN)
+OperatorMFRC::OperatorMFRC() : m_mfrc522(SS_PIN, RST_PIN)
 {
   for (byte i = 0; i < 6; i++)
   {
@@ -10,46 +10,46 @@ OperatorMFRC::OperatorMFRC() : mfrc522(SS_PIN, RST_PIN)
   setupSector(ID_PWD);
 }
 
-void OperatorMFRC::init()
+void OperatorMFRC::initConnection()
 {
-  mfrc522.PCD_Init();
+  m_mfrc522.PCD_Init();
 }
 
 bool OperatorMFRC::checkCard()
 {
-  if (isInitNewCard)
+  if (m_isInitNewCard)
     return true;
   // Ждем новую карту
-  if (!mfrc522.PICC_IsNewCardPresent())
+  if (!m_mfrc522.PICC_IsNewCardPresent())
   {
-    end();
+    closeConnection();
     return false;
   }
 
   // Выбираем одну из карт
-  if (!mfrc522.PICC_ReadCardSerial())
+  if (!m_mfrc522.PICC_ReadCardSerial())
   {
-    end();
+    closeConnection();
     return false;
   }
   // Показываем подробности карты
   Serial.print(F("Card UID:"));
-  dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
+  dump_byte_array(m_mfrc522.uid.uidByte, m_mfrc522.uid.size);
   Serial.println();
-  byte piccType = mfrc522.PICC_GetType(mfrc522.uid.sak);
+  byte piccType = m_mfrc522.PICC_GetType(m_mfrc522.uid.sak);
   // Проверяем совместимость
   if (piccType != MFRC522::PICC_TYPE_MIFARE_1K)
     return false;
-  setupPwdId();
-  isInitNewCard = true;
+  setupPasswordId();
+  m_isInitNewCard = true;
   return true;
 }
 
-void OperatorMFRC::end()
+void OperatorMFRC::closeConnection()
 {
-  mfrc522.PICC_HaltA();
-  mfrc522.PCD_StopCrypto1();
-  isInitNewCard = false;
+  m_mfrc522.PICC_HaltA();
+  m_mfrc522.PCD_StopCrypto1();
+  m_isInitNewCard = false;
 }
 
 uint16_t OperatorMFRC::readSumFromCard()
@@ -72,20 +72,11 @@ bool OperatorMFRC::writeSumToCard(uint16_t sum)
 {
   byte b0 = 0xFF & (sum >> 8);
   byte b1 = 0xFF & sum;
-  writeBuffer[0] = b0;
-  writeBuffer[1] = b1;
+  m_writeBuffer[0] = b0;
+  m_writeBuffer[1] = b1;
   addCRCToSum();
-  bool ok = true;
-  if (!writeAndCheck(SUM1))
-  {
-    //    Serial.println(F("Erroe write"));
-    ok = false;
-  }
-  if (!writeAndCheck(SUM2))
-  {
-    //    Serial.println(F("Erroe write"));
-    ok = false;
-  }
+  bool ok = writeAndCheck(SUM1);
+  ok &= writeAndCheck(SUM2);
   return ok;
 }
 
@@ -102,7 +93,7 @@ bool OperatorMFRC::readPwdSum()
 {
   setupSector(ID_PWD);
   // Сделать установку пароля для ID
-  if (!atification())
+  if (!loginIn())
     return false;
 
   readFromCard();
@@ -113,14 +104,14 @@ bool OperatorMFRC::readPwdSum()
 bool OperatorMFRC::writeAndCheck(byte sectorId)
 {
   setupSector(sectorId);
-  if (!atification())
+  if (!loginIn())
     return false;
+  
   writeToCard();
-
   if (!checkStatus())
     return false;
 
-  readFromCard();
+  readFromCard();  
   if (!checkStatus())
     return false;
 
@@ -131,29 +122,29 @@ uint16_t OperatorMFRC::readSumFromSector(byte sectorId)
 {
   uint16_t sum = 0;
   setupSector(sectorId);
-  if (!atification())
+  if (!loginIn())
     return sum;
 
   readFromCard();
-  sum = ((readBuffer[0] << 8) & 0xFF00) | readBuffer[1];
+  sum = ((m_readBuffer[0] << 8) & 0xFF00) | m_readBuffer[1];
   return sum;
 }
 
 inline void OperatorMFRC::addCRCToSum()
 {
-  writeBuffer[2] = writeBuffer[0] + writeBuffer[1];
+  m_writeBuffer[2] = m_writeBuffer[0] + m_writeBuffer[1];
 }
 
 inline bool OperatorMFRC::checkCRC()
 {
-  return (readBuffer[0] + readBuffer[1]) == readBuffer[2];
+  return (m_readBuffer[0] + m_readBuffer[1]) == m_readBuffer[2];
 }
 
 bool OperatorMFRC::checkBuffers(byte checkSize)
 {
   for (byte i = 0; i < checkSize; ++i)
   {
-    if (readBuffer[i] != writeBuffer[i])
+    if (m_readBuffer[i] != m_writeBuffer[i])
       return false;
   }
   return true;
@@ -161,46 +152,46 @@ bool OperatorMFRC::checkBuffers(byte checkSize)
 
 void OperatorMFRC::setupSector(byte s)
 {
-  sector = s;
-  blockAddr = 4 * sector;
-  trailerBlock = blockAddr + 3;
+  m_sector = s;
+  m_blockAddr = 4 * m_sector;
+  m_trailerBlock = m_blockAddr + 3;
 }
 
 inline void OperatorMFRC::writeToCard()
 {
   // Записываем данные в блок
-  status = mfrc522.MIFARE_Write(blockAddr, writeBuffer, sizeWriteBuf);
+  m_status = m_mfrc522.MIFARE_Write(m_blockAddr, m_writeBuffer, SIZE_WRITE_BUF);
 }
 
 inline void OperatorMFRC::readFromCard()
 {
   // Читаем данные из блока
-  size = sizeof(readBuffer); //FIX A buffer is not big enough.
-  status = mfrc522.MIFARE_Read(blockAddr, readBuffer, &size);
+  m_size = sizeof(m_readBuffer); //FIX A buffer is not big enough.
+  m_status = m_mfrc522.MIFARE_Read(m_blockAddr, m_readBuffer, &m_size);
 }
 
 bool OperatorMFRC::checkStatus()
 {
-  if (status != MFRC522::STATUS_OK)
+  if (m_status != MFRC522::STATUS_OK)
   {
     //    Serial.print(F("Error: "));
     //    Serial.println(mfrc522.GetStatusCodeName(status));
-    end();
+    closeConnection();
     return false;
   }
   return true;
 }
 
-bool OperatorMFRC::atification()
+bool OperatorMFRC::loginIn()
 {
-  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
+  m_status = m_mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, m_trailerBlock, &key, &(m_mfrc522.uid));
   return checkStatus();
 }
 
-void OperatorMFRC::setupPwdId()
+void OperatorMFRC::setupPasswordId()
 {
-  calcPassword(mfrc522.uid.uidByte, pwdId);
+  calcPassword(m_mfrc522.uid.uidByte, m_pwdId);
   Serial.print(F("Password is :"));
-  dump_byte_array(pwdId, 6);
+  dump_byte_array(m_pwdId, 6);
   Serial.println();
 }

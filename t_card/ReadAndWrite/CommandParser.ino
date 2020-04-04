@@ -2,22 +2,22 @@
 
 void ParserCommand::convertFormString(const String &cmdStr)
 {
-  String c = cmdStr.substring(0, cmdSize);
-  if (c.equals(READ))
+  String cmdParsing = cmdStr.substring(0, CMD_SIZE);
+  if (cmdParsing.equals(READ))
   {
     cmd = READ_SUM;
     calcRequestCRC(cmdStr);
-    if (!checkCRCRequest(cmdStr.substring(crcId, crcId + 2)))
+    if (!checkCRCRequest(cmdStr.substring(CRC_ID, CRC_ID + 2)))
       cmd = ERROR_CMD;
     return;
   }
 
-  if (c.equals(WRITE))
+  if (cmdParsing.equals(WRITE))
   {
     cmd = WRITE_SUM;
     calcRequestCRC(cmdStr);
-    if (checkCRCRequest(cmdStr.substring(crcId, crcId + 2)))
-      sum = toUint16(cmdStr.substring(sumId, sumId + 4));
+    if (checkCRCRequest(cmdStr.substring(CRC_ID, CRC_ID + 2)))
+      sum = toUint16(cmdStr.substring(SUM_ID, SUM_ID + 4));
     else
       cmd = ERROR_CMD;
     return;
@@ -59,7 +59,7 @@ String ParserCommand::convertToString()
 void ParserCommand::calcRequestCRC(const String &valStr)
 {
   crc = 256;
-  for (uint8_t i = 1; i < crcId; i += 2)
+  for (uint8_t i = 1; i < CRC_ID; i += 2)
     crc -= toUint8(valStr.substring(i, i + 2));
 }
 

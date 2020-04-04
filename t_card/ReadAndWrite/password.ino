@@ -1,5 +1,5 @@
 
-const char *msg = "T-card System 0x01";
+static const char *msg = "T-card System 0x01";
 
 static uint16_t crc16(uint8_t *pcBlock, const uint16_t polinom, uint8_t len = 18)
 {

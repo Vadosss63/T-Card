@@ -16,9 +16,9 @@ struct ParserCommand
   const String READ_ANSWER = ":150";
   const String WRITE_ANSWER = ":130";
 
-  const uint8_t cmdSize = 11;
-  const uint8_t sumId = 11;
-  const uint8_t crcId = 17;
+  const uint8_t CMD_SIZE = 11;
+  const uint8_t SUM_ID = 11;
+  const uint8_t CRC_ID = 17;
 
   Command cmd = ERROR_CMD;
   uint16_t sum = 0;
@@ -35,7 +35,6 @@ private:
   bool checkCRCRequest(const String &valStr);
 
   uint8_t toUint8(const String &valStr);
-
   uint16_t toUint16(const String &valStr);
 };
 

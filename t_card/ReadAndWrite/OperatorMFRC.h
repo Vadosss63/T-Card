@@ -14,11 +14,11 @@ public:
   OperatorMFRC();
   ~OperatorMFRC() = default;
 
-  void init();
+  void initConnection();
 
   bool checkCard();
 
-  void end();
+  void closeConnection();
 
   uint16_t readSumFromCard();
 
@@ -47,31 +47,31 @@ private:
 
   bool checkStatus();
 
-  bool atification();
+  bool loginIn();
 
-  void setupPwdId();
+  void setupPasswordId();
 
-  MFRC522 mfrc522;
+  MFRC522 m_mfrc522;
   MFRC522::MIFARE_Key key;
 
-  byte sector;
-  byte blockAddr;
-  byte trailerBlock;
-  static const byte sizeWriteBuf = 16;
-  byte writeBuffer[sizeWriteBuf] = {
+  byte m_sector;
+  byte m_blockAddr;
+  byte m_trailerBlock;
+  static const byte SIZE_WRITE_BUF = 16;
+  byte m_writeBuffer[SIZE_WRITE_BUF] = {
       0xFF, 0xFF, 0xFF, 0xFF,
       0xFF, 0xFF, 0xFF, 0xFF,
       0xFF, 0xFF, 0xFF, 0xFF,
       0xFF, 0xFF, 0xFF, 0xFF};
 
-  uint8_t pwdId[6] = {};
-  uint8_t pwdSUM[6] = {};
+  uint8_t m_pwdId[6] = {};
+  uint8_t m_pwdSUM[6] = {};
 
-  byte status;
-  byte readBuffer[18];
-  byte size = sizeof(readBuffer);
+  byte m_status;
+  byte m_readBuffer[18];
+  byte m_size = sizeof(m_readBuffer);
 
-  bool isInitNewCard = false;
+  bool m_isInitNewCard = false;
 };
 
 #endif

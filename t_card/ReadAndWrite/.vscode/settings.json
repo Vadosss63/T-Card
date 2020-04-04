@@ -1,0 +1,8 @@
+{
+    "arduino.defaultBaudRate": 9600,
+    "files.associations": {
+        "cmath": "cpp",
+        "*.tcc": "cpp",
+        "type_traits": "cpp"
+    }
+}

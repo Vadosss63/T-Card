@@ -16,7 +16,7 @@ public:
 
   void init()
   {
-    operatorMFRC.init();
+    m_operatorMFRC.initConnection();
   }
 
   void executeCommand()
@@ -32,69 +32,69 @@ private:
   inline void waitCmd()
   {
     while (Serial.available() < 1)
-    { /* Ждем пока не придут данные */
+    { 
       delay(10);
     }
   }
 
   void readCMD()
   {
-    readCmdBuf = Serial.readString();
+    m_readCmdBuf = Serial.readString();
   }
 
   void parsingCMD()
   {
-    parserCommand.convertFormString(readCmdBuf);
+    m_parserCommand.convertFormString(m_readCmdBuf);
   }
 
   void execute()
   {
-    writeAnswerBuf = "";
-    noError = operatorMFRC.checkCard();
+    m_writeAnswerBuf = "";
+    m_noError = m_operatorMFRC.checkCard();
 
-    switch (parserCommand.cmd)
+    switch (m_parserCommand.cmd)
     {
     case READ_SUM:
-      if (noError)
+      if (m_noError)
         readSumFromCard();
       break;
     case WRITE_SUM:
-      if (noError)
+      if (m_noError)
         writeSumToCard();
       break;
     case ERROR_CMD:
       break;
     }
-    if (!noError)
+    if (!m_noError)
     {
-      parserCommand.sum = 0;
+      m_parserCommand.sum = 0;
     }
 
-    writeAnswerBuf = parserCommand.convertToString();
+    m_writeAnswerBuf = m_parserCommand.convertToString();
   }
 
   void sendAnswer()
   {
-    Serial.print(writeAnswerBuf);
+    Serial.print(m_writeAnswerBuf);
   }
 
   uint16_t readSumFromCard()
   {
-    uint16_t s = operatorMFRC.readSumFromCard();
-    parserCommand.sum = s;
+    uint16_t s = m_operatorMFRC.readSumFromCard();
+    m_parserCommand.sum = s;
   }
 
   void writeSumToCard()
   {
-    uint16_t sum = parserCommand.sum;
-    noError = operatorMFRC.writeSumToCard(sum);
+    uint16_t sum = m_parserCommand.sum;
+    m_noError = m_operatorMFRC.writeSumToCard(sum);
   }
 
-  OperatorMFRC operatorMFRC;
-  ParserCommand parserCommand;
-  String readCmdBuf;
-  String writeAnswerBuf;
-  bool noError;
+  OperatorMFRC m_operatorMFRC;
+  ParserCommand m_parserCommand;
+  String m_readCmdBuf;
+  String m_writeAnswerBuf;
+  bool m_noError;
 };
 
 OperatorCommad operatorCommad;
