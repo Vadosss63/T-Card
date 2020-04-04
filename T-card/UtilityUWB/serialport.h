@@ -29,6 +29,7 @@ public:
     bool Close() noexcept;
 
     bool Write(const std::vector<uint8_t> &reqest) noexcept;
+    bool Write(const std::string &reqest) noexcept;
     bool Read(std::vector<uint8_t>& answer) noexcept;
     bool ReadAnswer(std::vector<uint8_t>& answer) noexcept;
 

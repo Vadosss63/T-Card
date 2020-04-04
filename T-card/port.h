@@ -20,10 +20,12 @@ public:
     ~Port() override;
 
     void writeToPort(const std::vector<uint8_t>& data);
+    void writeToPort(const std::string& data);
+
     void readInPort(int size);
     void getData(std::vector<uint8_t>& data);
+    void getData(std::string& data);
 
-    std::vector<uint8_t> getDataAnswer();
     void AsincRead();
 
 

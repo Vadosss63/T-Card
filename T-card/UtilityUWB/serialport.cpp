@@ -51,6 +51,13 @@ bool RSHandler::Write(const std::vector<uint8_t>& reqest) noexcept
     return IsNoError();
 }
 
+bool RSHandler::Write(const std::string& reqest) noexcept
+{
+    ClearErrors();
+    m_serialPort.write_some(boost::asio::buffer(reqest), GetErrors());
+    return IsNoError();
+}
+
 bool RSHandler::Read(std::vector<uint8_t>& answer) noexcept
 {
     ClearErrors();

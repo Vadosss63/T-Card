@@ -48,13 +48,12 @@ private:
     QString convertToString(const std::vector<uint8_t>& data);
     QString convertToStringNumber(const std::vector<uint8_t>& data);
     QString convertToStringInt(uint16_t dataInt);
+    uint16_t getSumFromCard();
 
     Port* m_port;
     Ui::MainWindow *ui;
 
-    uint16_t getSumFromCard();
-
-    std::vector<uint8_t> m_dataAnswer;
+    std::string m_dataAnswer;
     bool m_isReady = false;
     std::condition_variable m_dataReady;
     std::mutex mtx;

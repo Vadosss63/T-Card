@@ -81,17 +81,17 @@ void MainWindow::connectToPort()
 void MainWindow::activateBtn()
 {
     print("ACTIVATE");
-//    m_port->writeToPort(CMD::getActivate());
-//    printSendData(CMD::getActivate());
-//    m_port->readInPort(1);
-//    std::vector<uint8_t> data;
-//    m_port->getData(data);
-//    printReadData(data);
-//    m_port->readInPort(19);
-//    m_port->getData(data);
-//    printReadData(data);
-//    QString number = convertToStringNumber(CMD::getNumberCard(data));
-//    showNumberCard(number);
+    //    m_port->writeToPort(CMD::getActivate());
+    //    printSendData(CMD::getActivate());
+    //    m_port->readInPort(1);
+    //    std::vector<uint8_t> data;
+    //    m_port->getData(data);
+    //    printReadData(data);
+    //    m_port->readInPort(19);
+    //    m_port->getData(data);
+    //    printReadData(data);
+    //    QString number = convertToStringNumber(CMD::getNumberCard(data));
+    //    showNumberCard(number);
 }
 
 void MainWindow::sumBtn()
@@ -104,43 +104,44 @@ void MainWindow::sumBtn()
 
 void MainWindow::writeSum(uint16_t val)
 {
-//    std::vector<uint8_t> wd(CMD::getWriteSum(val));
-//    m_port->writeToPort(wd);
-//    printSendData(wd);
-//    m_port->readInPort(1);
-//    std::vector<uint8_t> data;
-//    m_port->getData(data);
-//    printReadData(data);
-//    m_port->readInPort(12);
-//    m_port->getData(data);
-//    printReadData(data);
+    //    std::vector<uint8_t> wd(CMD::getWriteSum(val));
+    //    m_port->writeToPort(wd);
+    //    printSendData(wd);
+    //    m_port->readInPort(1);
+    //    std::vector<uint8_t> data;
+    //    m_port->getData(data);
+    //    printReadData(data);
+    //    m_port->readInPort(12);
+    //    m_port->getData(data);
+    //    printReadData(data);
 }
 
 void MainWindow::sendDataBtn()
 {
     print("sendDataBtn");
     QString data = ui->send_data->text();
-    QStringList sl = data.split("0x", QString::SkipEmptyParts);
+    //    QStringList sl = data.split("0x", QString::SkipEmptyParts);
 
-    std::vector<uint8_t> dataByte(sl.size());
-    bool ok;
-    for (size_t i = 0; i < sl.size(); ++i) {
+    //    std::vector<uint8_t> dataByte(sl.size());
+    //    bool ok;
+    //    for (size_t i = 0; i < sl.size(); ++i) {
 
-        dataByte[i] = sl[i].toInt(&ok, 16);
-    }
-    ok = false;
-    m_port->writeToPort(dataByte);
-    printSendData(dataByte);
+    //        dataByte[i] = sl[i].toInt(&ok, 16);
+    //    }
+    //    ok = false;
+
+    m_port->writeToPort(data.toStdString());
+    print(data);
 }
 
 void MainWindow::readDataFromPort()
 {
-    std::vector<uint8_t> dataAnswer;
+    std::string dataAnswer;
     m_port->getData(dataAnswer);
     m_dataAnswer = dataAnswer;
     m_isReady = true;
     m_dataReady.notify_one();
-    printReadData(dataAnswer);
+    print(QString::fromStdString(dataAnswer));
 }
 
 void MainWindow::printConsole(const QString &data)
@@ -198,16 +199,16 @@ QString MainWindow::convertToStringInt(uint16_t dataInt)
 
 uint16_t MainWindow::getSumFromCard()
 {
-//    m_port->writeToPort(CMD::getSum());
-//    printSendData(CMD::getSum());
-//    m_port->readInPort(1);
-//    std::vector<uint8_t> data;
-//    m_port->getData(data);
-//    printReadData(data);
-//    m_port->readInPort(28);
-//    m_port->getData(data);
-//    printReadData(data);
-//    return CMD::getSumCard(data);
+    //    m_port->writeToPort(CMD::getSum());
+    //    printSendData(CMD::getSum());
+    //    m_port->readInPort(1);
+    //    std::vector<uint8_t> data;
+    //    m_port->getData(data);
+    //    printReadData(data);
+    //    m_port->readInPort(28);
+    //    m_port->getData(data);
+    //    printReadData(data);
+    //    return CMD::getSumCard(data);
 }
 
 

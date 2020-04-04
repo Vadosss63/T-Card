@@ -18,10 +18,26 @@ void Port::writeToPort(const std::vector<uint8_t>& data){
     }
 }
 
+void Port::writeToPort(const std::string &data)
+{
+    if(m_port.IsOpen()){
+        if(!m_port.Write(data)){
+            checkErrors();
+        }
+    }
+}
+
 void Port::getData(std::vector<uint8_t> &data){
     data = std::move(m_data);
 }
 
+void Port::getData(std::string &data)
+{
+    data.resize(m_data.size());
+    for (int i = 0; i < m_data.size(); ++i) {
+        data[i] = m_data[i];
+    }
+}
 
 void Port::AsincRead()
 {
