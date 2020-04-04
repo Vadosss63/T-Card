@@ -3,79 +3,75 @@
 
 class OperatorMFRC
 {
-    enum SectorValue
-    {
-      ID_PWD = 1,
-      SUM1,
-      SUM2
-    };
+  enum SectorValue
+  {
+    ID_PWD = 1,
+    SUM1,
+    SUM2
+  };
 
-  public:
+public:
+  OperatorMFRC();
+  ~OperatorMFRC() = default;
 
-    OperatorMFRC();
-    ~OperatorMFRC() = default;
+  void init();
 
-    void init();
+  bool checkCard();
 
-    bool checkCard();
+  void end();
 
-    void end();
+  uint16_t readSumFromCard();
 
-    uint16_t readSumFromCard();
+  bool writeSumToCard(uint16_t sum);
 
-    bool writeSumToCard(uint16_t sum);
+  static void dump_byte_array(byte *buffer, byte bufferSize);
 
-    static void dump_byte_array(byte *buffer, byte bufferSize);
+private:
+  bool readPwdSum();
 
-  private:
+  bool writeAndCheck(byte sectorId);
 
-    bool readPwdSum();
+  uint16_t readSumFromSector(byte sectorId);
 
-    bool writeAndCheck(byte sectorId);
+  inline void addCRCToSum();
 
-    uint16_t readSumFromSector(byte sectorId);
+  inline bool checkCRC();
 
-    inline void addCRCToSum();
+  bool checkBuffers(byte checkSize);
 
-    inline bool checkCRC();
+  void setupSector(byte s);
 
-    bool checkBeffers(byte checkSize);
+  inline void writeToCard();
 
-    void setupSector(byte s);
+  inline void readFromCard();
 
-    inline void writeToCard();
+  bool checkStatus();
 
-    inline void readFromCard();
+  bool atification();
 
-    bool checkStatus();
+  void setupPwdId();
 
-    bool atification();
+  MFRC522 mfrc522;
+  MFRC522::MIFARE_Key key;
 
-    void setupPwdId();
-
-    MFRC522 mfrc522;
-    MFRC522::MIFARE_Key key;
-
-    byte sector;
-    byte blockAddr;
-    byte trailerBlock;
-    static const byte sizeWriteBuf = 16;
-    byte writeBuffer[sizeWriteBuf]    = { // Данные, которые мы запишем на карту
+  byte sector;
+  byte blockAddr;
+  byte trailerBlock;
+  static const byte sizeWriteBuf = 16;
+  byte writeBuffer[sizeWriteBuf] = {
       0xFF, 0xFF, 0xFF, 0xFF,
       0xFF, 0xFF, 0xFF, 0xFF,
       0xFF, 0xFF, 0xFF, 0xFF,
-      0xFF, 0xFF, 0xFF, 0xFF
-    };
+      0xFF, 0xFF, 0xFF, 0xFF};
 
-    uint8_t pwdId[6] = {};
-    uint8_t pwdSUM[6] = {};
+  uint8_t pwdId[6] = {};
+  uint8_t pwdSUM[6] = {};
 
-    byte status;
-    byte readBuffer[18];
-    byte size = sizeof(readBuffer);
+  byte status;
+  byte readBuffer[18];
+  byte size = sizeof(readBuffer);
 
-    bool isInitNewCard = false;
-
+  bool isInitNewCard = false;
 };
 
 #endif

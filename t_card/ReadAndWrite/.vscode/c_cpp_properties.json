@@ -12,7 +12,8 @@
                 "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\**",
                 "C:\\Program Files (x86)\\Arduino\\libraries\\**",
                 "C:\\Program Files (x86)\\Arduino\\hardware\\tools**",
-                "C:\\Program Files (x86)\\Arduino\\libraries**"
+                "C:\\Program Files (x86)\\Arduino\\libraries**",
+                "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\**"
             ],
             "forcedInclude": [
                 "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
@@ -20,7 +21,7 @@
             "intelliSenseMode": "clang-x64",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "compilerPath": "H:\\Qt\\Tools\\mingw730_64\\bin\\gcc.exe"
+            "compilerPath": "H:\\Qt\\Tools\\mingw730_64\\bin\\gcc.exe"            
         }
     ],
     "version": 4

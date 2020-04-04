@@ -1,10 +1,9 @@
 #include "OperatorMFRC.h"
 
-
-
-OperatorMFRC::OperatorMFRC(): mfrc522(SS_PIN, RST_PIN)
+OperatorMFRC::OperatorMFRC() : mfrc522(SS_PIN, RST_PIN)
 {
-  for (byte i = 0; i < 6; i++) {
+  for (byte i = 0; i < 6; i++)
+  {
     key.keyByte[i] = 0xFF;
   }
 
@@ -18,7 +17,8 @@ void OperatorMFRC::init()
 
 bool OperatorMFRC::checkCard()
 {
-  if(isInitNewCard) return true;
+  if (isInitNewCard)
+    return true;
   // Ждем новую карту
   if (!mfrc522.PICC_IsNewCardPresent())
   {
@@ -27,7 +27,7 @@ bool OperatorMFRC::checkCard()
   }
 
   // Выбираем одну из карт
-  if ( ! mfrc522.PICC_ReadCardSerial())
+  if (!mfrc522.PICC_ReadCardSerial())
   {
     end();
     return false;
@@ -71,26 +71,28 @@ uint16_t OperatorMFRC::readSumFromCard()
 bool OperatorMFRC::writeSumToCard(uint16_t sum)
 {
   byte b0 = 0xFF & (sum >> 8);
-  byte b1 = 0xFF &  sum;
+  byte b1 = 0xFF & sum;
   writeBuffer[0] = b0;
   writeBuffer[1] = b1;
   addCRCToSum();
   bool ok = true;
   if (!writeAndCheck(SUM1))
   {
-//    Serial.println(F("Erroe write"));
+    //    Serial.println(F("Erroe write"));
     ok = false;
   }
   if (!writeAndCheck(SUM2))
   {
-//    Serial.println(F("Erroe write"));
+    //    Serial.println(F("Erroe write"));
     ok = false;
   }
   return ok;
 }
 
-void OperatorMFRC::dump_byte_array(byte *buffer, byte bufferSize) {
-  for (byte i = 0; i < bufferSize; i++) {
+void OperatorMFRC::dump_byte_array(byte *buffer, byte bufferSize)
+{
+  for (byte i = 0; i < bufferSize; i++)
+  {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
   }
@@ -122,7 +124,7 @@ bool OperatorMFRC::writeAndCheck(byte sectorId)
   if (!checkStatus())
     return false;
 
-  return checkBeffers(3);
+  return checkBuffers(3);
 }
 
 uint16_t OperatorMFRC::readSumFromSector(byte sectorId)
@@ -147,8 +149,7 @@ inline bool OperatorMFRC::checkCRC()
   return (readBuffer[0] + readBuffer[1]) == readBuffer[2];
 }
 
-
-bool OperatorMFRC::checkBeffers(byte checkSize)
+bool OperatorMFRC::checkBuffers(byte checkSize)
 {
   for (byte i = 0; i < checkSize; ++i)
   {
@@ -161,33 +162,37 @@ bool OperatorMFRC::checkBeffers(byte checkSize)
 void OperatorMFRC::setupSector(byte s)
 {
   sector = s;
-  blockAddr      = 4 * sector;
-  trailerBlock   = blockAddr + 3;
+  blockAddr = 4 * sector;
+  trailerBlock = blockAddr + 3;
 }
 
-inline void OperatorMFRC::writeToCard() {
+inline void OperatorMFRC::writeToCard()
+{
   // Записываем данные в блок
   status = mfrc522.MIFARE_Write(blockAddr, writeBuffer, sizeWriteBuf);
 }
 
-inline void OperatorMFRC::readFromCard() {
+inline void OperatorMFRC::readFromCard()
+{
   // Читаем данные из блока
-  size = sizeof(readBuffer);//FIX A buffer is not big enough.
+  size = sizeof(readBuffer); //FIX A buffer is not big enough.
   status = mfrc522.MIFARE_Read(blockAddr, readBuffer, &size);
 }
 
 bool OperatorMFRC::checkStatus()
 {
-  if (status != MFRC522::STATUS_OK) {
-//    Serial.print(F("Error: "));
-//    Serial.println(mfrc522.GetStatusCodeName(status));
+  if (status != MFRC522::STATUS_OK)
+  {
+    //    Serial.print(F("Error: "));
+    //    Serial.println(mfrc522.GetStatusCodeName(status));
     end();
     return false;
   }
   return true;
 }
 
-bool OperatorMFRC::atification() {
+bool OperatorMFRC::atification()
+{
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
   return checkStatus();
 }

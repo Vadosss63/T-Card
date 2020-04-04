@@ -1,6 +1,6 @@
 #include "CommandParser.h"
 
-void ParserCommand::convertFormString(const String& cmdStr)
+void ParserCommand::convertFormString(const String &cmdStr)
 {
   String c = cmdStr.substring(0, cmdSize);
   if (c.equals(READ))
@@ -31,15 +31,15 @@ String ParserCommand::convertToString()
   String answer;
   switch (cmd)
   {
-    case READ_SUM:
-        answer += READ_ANSWER;
-        break;
-        
-    case WRITE_SUM:
-        answer += WRITE_ANSWER;
-        break;
-    default:
-      return answer;
+  case READ_SUM:
+    answer += READ_ANSWER;
+    break;
+
+  case WRITE_SUM:
+    answer += WRITE_ANSWER;
+    break;
+  default:
+    return answer;
   }
 
   String sumStr(sum);
@@ -56,14 +56,14 @@ String ParserCommand::convertToString()
   return answer;
 }
 
-void ParserCommand::calcRequestCRC(const String& valStr)
+void ParserCommand::calcRequestCRC(const String &valStr)
 {
   crc = 256;
   for (uint8_t i = 1; i < crcId; i += 2)
     crc -= toUint8(valStr.substring(i, i + 2));
 }
 
-String ParserCommand::calcAnswerCRC(const String& valStr)
+String ParserCommand::calcAnswerCRC(const String &valStr)
 {
   uint16_t crcL = 256 - toUint8(valStr.substring(1, 3));
   String sumStr(sum);
@@ -81,17 +81,17 @@ String ParserCommand::calcAnswerCRC(const String& valStr)
   return crcStr;
 }
 
-bool ParserCommand::checkCRCRequest(const String& valStr)
+bool ParserCommand::checkCRCRequest(const String &valStr)
 {
   return valStr.equalsIgnoreCase(String(crc, HEX));
 }
 
-uint8_t ParserCommand::toUint8(const String& valStr)
+uint8_t ParserCommand::toUint8(const String &valStr)
 {
   return valStr.toInt();
 }
 
-uint16_t ParserCommand::toUint16(const String& valStr)
+uint16_t ParserCommand::toUint16(const String &valStr)
 {
   return valStr.toInt();
 }
