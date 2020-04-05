@@ -1,14 +1,8 @@
 #ifndef OPERATOR_MFRC_H
 #define OPERATOR_MFRC_H
 
-class OperatorMFRC
-{
-  enum SectorValue
-  {
-    ID_PWD = 1,
-    SUM1,
-    SUM2
-  };
+class OperatorMFRC {
+  enum SectorValue { ID_PWD = 1, SUM1, SUM2 };
 
 public:
   OperatorMFRC();
@@ -58,11 +52,9 @@ private:
   byte m_blockAddr;
   byte m_trailerBlock;
   static const byte SIZE_WRITE_BUF = 16;
-  byte m_writeBuffer[SIZE_WRITE_BUF] = {
-      0xFF, 0xFF, 0xFF, 0xFF,
-      0xFF, 0xFF, 0xFF, 0xFF,
-      0xFF, 0xFF, 0xFF, 0xFF,
-      0xFF, 0xFF, 0xFF, 0xFF};
+  byte m_writeBuffer[SIZE_WRITE_BUF] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                                        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                                        0xFF, 0xFF, 0xFF, 0xFF};
 
   uint8_t m_pwdId[6] = {};
   uint8_t m_pwdSUM[6] = {};

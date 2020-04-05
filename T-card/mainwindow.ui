@@ -71,7 +71,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="OperationCardGB">
+   <widget class="QGroupBox" name="operationCardGB">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -96,8 +96,12 @@
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="SumLine"/>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="addSumBtn">
+        <property name="text">
+         <string>Пополнить баланс</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="activateBtn">
@@ -107,9 +111,23 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QPushButton" name="SumBtn">
+       <widget class="QPushButton" name="getSumBtn">
         <property name="text">
-         <string>Зписать на карту</string>
+         <string>Состояния баланса</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="sumDisplay">
+        <property name="text">
+         <string>0, руб</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sumLine">
+        <property name="maximum">
+         <number>9999</number>
         </property>
        </widget>
       </item>

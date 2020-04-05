@@ -1,16 +1,9 @@
 #ifndef COMMAND_PARSER_H
 #define COMMAND_PARSER_H
 
-enum Command
-{
-  READ_SUM,
-  WRITE_SUM,
-  NEW_CARD,
-  ERROR_CMD
-};
+enum Command { READ_SUM, WRITE_SUM, NEW_CARD, ERROR_CMD };
 
-struct ParserCommand
-{
+struct ParserCommand {
   const String READ = ":0100000000";
   const String WRITE = ":0301000000";
   const String READ_ANSWER = ":150";

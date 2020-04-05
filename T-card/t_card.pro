@@ -2,6 +2,8 @@ QT += core gui
 QT += serialport
 QT += widgets printsupport
 
+CONFIG += c++1z
+
 TARGET = T-Card
 TEMPLATE = app
 
@@ -14,6 +16,7 @@ SOURCES += main.cpp\
 HEADERS += mainwindow.h \
     UtilityUWB/errorcodeboost.h \
     UtilityUWB/serialport.h \
+    command.h \
     port.h
 
 FORMS += mainwindow.ui

@@ -6,35 +6,34 @@
 
 extern void calcPassword(uint8_t *uid, uint8_t *pwd);
 
-class OperatorCommad
-{
+class OperatorCommad {
 public:
-    OperatorCommad() = default;
-    ~OperatorCommad() = default;
+  OperatorCommad() = default;
+  ~OperatorCommad() = default;
 
-    void init();
+  void init();
 
-    void executeCommand();
+  void executeCommand();
 
 private:
-    inline void waitCmd();
+  inline void waitCmd();
 
-    void readCMD();
+  void readCMD();
 
-    void parsingCMD();
-    void execute();
+  void parsingCMD();
+  void execute();
 
-    void sendAnswer();
+  void sendAnswer();
 
-    uint16_t readSumFromCard();
+  uint16_t readSumFromCard();
 
-    void writeSumToCard();
+  void writeSumToCard();
 
-    OperatorMFRC m_operatorMFRC;
-    ParserCommand m_parserCommand;
-    String m_readCmdBuf;
-    String m_writeAnswerBuf;
-    bool m_noError;
+  OperatorMFRC m_operatorMFRC;
+  ParserCommand m_parserCommand;
+  String m_readCmdBuf;
+  String m_writeAnswerBuf;
+  bool m_noError;
 };
 
 #endif

@@ -1,65 +1,62 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QByteArray>
+#include <QMainWindow>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+
 #include "port.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+ public:
+  MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
 
-signals:
-    void saveSettings(QString name, int baudrate);
-    void print(const QString& data);
+ signals:
+  void saveSettings(QString name, int baudrate);
+  void print(const QString &data);
+  void dispSum(uint16_t sum);
 
-private slots:
+ private slots:
 
-    void searchPort();
-    void writeSettings();
-    void connectToPort();
-    void setBaudRate(int idx);
+  void searchPort();
+  void writeSettings();
+  void connectToPort();
+  void setBaudRate(int idx);
 
-    // Команды управления
-    void activateBtn();
-    void sumBtn();
-    void sendDataBtn();
-    void readDataFromPort();
+  // Команды управления
+  void activateBtn();
+  void sumBtn();
+  void writeSumToCard();
+  void sendDataBtn();
+  void readDataFromPort();
 
-    void printConsole(const QString& data);
+  void printConsole(const QString &data);
 
-private:
-    void showSum(const QString& number);
+  void displaySum(uint16_t sum);
 
-    void writeSum(uint16_t val);
-    void printSendData(const std::vector<uint8_t>& data);
-    void printReadData(const std::vector<uint8_t>& data);
+ private:
+  void writeSum(uint16_t val);
 
-    QString convertToString(const std::vector<uint8_t>& data);
-    QString convertToStringNumber(const std::vector<uint8_t>& data);
-    QString convertToStringInt(uint16_t dataInt);
-    uint16_t getSumFromCard();
+  QString convertToStringNumber(const std::vector<uint8_t> &data);
+  QString convertToStringInt(uint16_t dataInt);
+  uint16_t getSumFromCard();
 
-    Port* m_port;
-    Ui::MainWindow *ui;
+  Port *m_port;
+  Ui::MainWindow *ui;
 
-    std::string m_dataAnswer;
-    bool m_isReady = false;
-    std::condition_variable m_dataReady;
-    std::mutex mtx;
-    std::thread m_thread;
-    std::mutex m_printMutex;
+  std::string m_dataAnswer;
+  bool m_isReady = false;
+  std::condition_variable m_dataReady;
+  std::thread m_thread;
+  std::mutex m_printMutex;
 };
 
-
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H
