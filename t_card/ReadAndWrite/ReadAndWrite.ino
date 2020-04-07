@@ -10,6 +10,7 @@ OperatorCommad operatorCommad;
 void setup()
 {
   Serial.begin(9600);
+  Serial.setTimeout(5);
   while (!Serial)
     ;
   SPI.begin();
