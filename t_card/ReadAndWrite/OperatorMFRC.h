@@ -20,6 +20,10 @@ public:
 
   static void dump_byte_array(byte *buffer, byte bufferSize);
 
+  bool activateCard();
+
+  MFRC522::StatusCode getStatus() { return (MFRC522::StatusCode)m_status; }
+
 private:
   bool readPwdSum();
 
@@ -44,6 +48,10 @@ private:
   bool loginIn();
 
   void setupPasswordId();
+
+  bool setKeys(MFRC522::MIFARE_Key *oldKeyA, MFRC522::MIFARE_Key *oldKeyB,
+               MFRC522::MIFARE_Key *newKeyA, MFRC522::MIFARE_Key *newKeyB,
+               int sector);
 
   MFRC522 m_mfrc522;
   MFRC522::MIFARE_Key key;

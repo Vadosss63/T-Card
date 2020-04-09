@@ -36,8 +36,8 @@ void OperatorCommad::execute() {
       writeSumToCard();
     break;
   case ACTIVATION_CARD:
-    // if (m_noError)
-    activationCard();
+    if (MFRC522::STATUS_TIMEOUT == m_operatorMFRC.getStatus())
+      activationCard();
     break;
   case ERROR_CMD:
     break;
@@ -62,5 +62,9 @@ void OperatorCommad::writeSumToCard() {
 }
 
 void OperatorCommad::activationCard() {
-  m_parserCommand.cmd = ACTIVATION_CARD_OK;
+  bool ok = m_operatorMFRC.activateCard();
+  if (ok) {
+    m_parserCommand.cmd = ACTIVATION_CARD_OK;
+    m_noError = true;
+  }
 }
