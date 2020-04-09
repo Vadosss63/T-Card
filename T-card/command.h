@@ -6,9 +6,14 @@
 
 const std::string READ_ANSWER = ":150";
 const std::string WRITE = ":0301000000";
+const std::string ACTIVATION_OK = ":051000000000000000\r\n\n";
 const uint8_t CRC_ID = 17;
 
 std::string getSumCMD() { return ":0100000000000000FF\r\n\n"; }
+
+std::string getActivationCMD() { return ":050000000000000000\r\n\n"; }
+
+bool checkActivation(const std::string& str) { return str == ACTIVATION_OK; }
 
 inline uint8_t toUint8(std::string valStr) {
   return static_cast<uint8_t>(std::stoi(valStr));

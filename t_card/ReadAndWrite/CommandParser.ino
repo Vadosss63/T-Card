@@ -20,6 +20,11 @@ void ParserCommand::convertFormString(const String &cmdStr) {
     return;
   }
 
+  if (cmdStr.equals(ACTIVATION)) {
+    cmd = ACTIVATION_CARD;
+    return;
+  }
+
   cmd = ERROR_CMD;
 }
 
@@ -33,6 +38,13 @@ String ParserCommand::convertToString() {
   case WRITE_SUM:
     answer += WRITE_ANSWER;
     break;
+
+  case ACTIVATION_CARD:
+    return ACTIVATION;
+
+  case ACTIVATION_CARD_OK:
+    return ACTIVATION_ANSWER_OK;
+
   default:
     return answer;
   }

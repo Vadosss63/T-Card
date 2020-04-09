@@ -43,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(writeSettingsPort(QString, int)));
   connect(ui->ConnectBtn, SIGNAL(clicked()), this, SLOT(connectToPort()));
   connect(ui->DisconectBtn, SIGNAL(clicked()), m_port, SLOT(disconnectPort()));
-  connect(this, SIGNAL(dispSum(uint16_t)), this, SLOT(displaySum(uint16_t)));
+  connect(this, SIGNAL(dispSum(int)), this, SLOT(displaySum(int)),
+          Qt::QueuedConnection);
   //  ui->operationCardGB->setEnabled(false);
 }
 
@@ -79,11 +80,15 @@ void MainWindow::connectToPort() {
   m_port->AsincRead();
 }
 
-void MainWindow::activateBtn() { print("ACTIVATE"); }
+void MainWindow::activateBtn() {
+  print("ACTIVATE");
+  sendToPort(getActivationCMD());
+}
 
 void MainWindow::sumBtn() {
   print("SUM");
   uint16_t sumInt = getSumFromCard();
+
   emit dispSum(sumInt);
 }
 
@@ -94,7 +99,7 @@ void MainWindow::writeSumToCard() {
 
 void MainWindow::writeSum(uint16_t val) {
   print("Write");
-  m_port->writeToPort(getWriteSumCMD(val));
+  sendToPort(getWriteSumCMD(val));
 }
 
 void MainWindow::sendDataBtn() {
@@ -110,7 +115,7 @@ void MainWindow::sendDataBtn() {
   //    }
   //    ok = false;
 
-  m_port->writeToPort(data.toStdString());
+  sendToPort(data.toStdString());
   print(data);
 }
 
@@ -129,10 +134,10 @@ void MainWindow::printConsole(const QString &data) {
   ui->consol->moveCursor(QTextCursor::End);  // Scroll
 }
 
-void MainWindow::displaySum(uint16_t sum) {
+void MainWindow::displaySum(int sum) {
   std::lock_guard<std::mutex> l(m_printMutex);
 
-  ui->sumDisplay->setText(QString("%1 руб.").arg((int)sum));
+  ui->sumDisplay->setText(QString("%1 руб.").arg(sum));
 }
 
 QString MainWindow::convertToStringNumber(const std::vector<uint8_t> &data) {
@@ -150,6 +155,12 @@ QString MainWindow::convertToStringInt(uint16_t dataInt) {
 }
 
 uint16_t MainWindow::getSumFromCard() {
-  m_port->writeToPort(getSumCMD());
+  sendToPort(getSumCMD());
+  waitAnswer();
   return getSum(m_dataAnswer);
+}
+
+void MainWindow::waitAnswer() {
+  std::unique_lock<std::mutex> lck(mtx);
+  m_dataReady.wait_for(lck, std::chrono::seconds(1));
 }

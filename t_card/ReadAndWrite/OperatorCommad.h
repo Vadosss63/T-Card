@@ -29,6 +29,8 @@ private:
 
   void writeSumToCard();
 
+  void activationCard();
+
   OperatorMFRC m_operatorMFRC;
   ParserCommand m_parserCommand;
   String m_readCmdBuf;

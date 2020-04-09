@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow {
  signals:
   void saveSettings(QString name, int baudrate);
   void print(const QString &data);
-  void dispSum(uint16_t sum);
+  void dispSum(int sum);
 
  private slots:
 
@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow {
 
   void printConsole(const QString &data);
 
-  void displaySum(uint16_t sum);
+  void displaySum(int sum);
 
  private:
   void writeSum(uint16_t val);
@@ -49,14 +49,23 @@ class MainWindow : public QMainWindow {
   QString convertToStringInt(uint16_t dataInt);
   uint16_t getSumFromCard();
 
+  void waitAnswer();
+
+  template <typename T>
+  void sendToPort(const T &data) {
+    m_isReady = false;
+    m_port->writeToPort(data);
+  }
+
   Port *m_port;
   Ui::MainWindow *ui;
 
   std::string m_dataAnswer;
-  bool m_isReady = false;
+  std::atomic<bool> m_isReady = false;
   std::condition_variable m_dataReady;
   std::thread m_thread;
   std::mutex m_printMutex;
+  std::mutex mtx;
 };
 
 #endif  // MAINWINDOW_H

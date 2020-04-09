@@ -1,5 +1,7 @@
 #include <SPI.h>
+
 #include <MFRC522.h>
+
 #include "OperatorCommad.h"
 
 #define RST_PIN 9
@@ -15,7 +17,7 @@ void setup()
     ;
   SPI.begin();
   operatorCommad.init();
-  Serial.println(F("T-Card Run."));
+  // Serial.println(F("T-Card Run."));
 }
 
 void loop()

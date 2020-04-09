@@ -35,6 +35,10 @@ void OperatorCommad::execute() {
     if (m_noError)
       writeSumToCard();
     break;
+  case ACTIVATION_CARD:
+    // if (m_noError)
+    activationCard();
+    break;
   case ERROR_CMD:
     break;
   }
@@ -55,4 +59,8 @@ uint16_t OperatorCommad::readSumFromCard() {
 void OperatorCommad::writeSumToCard() {
   uint16_t sum = m_parserCommand.sum;
   m_noError = m_operatorMFRC.writeSumToCard(sum);
+}
+
+void OperatorCommad::activationCard() {
+  m_parserCommand.cmd = ACTIVATION_CARD_OK;
 }
