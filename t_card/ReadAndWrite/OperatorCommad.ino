@@ -30,6 +30,10 @@ void OperatorCommad::execute() {
   case READ_SUM:
     if (m_noError)
       readSumFromCard();
+    else {
+      return;
+    }
+
     break;
   case WRITE_SUM:
     if (m_noError)
@@ -49,7 +53,10 @@ void OperatorCommad::execute() {
   m_writeAnswerBuf = m_parserCommand.convertToString();
 }
 
-void OperatorCommad::sendAnswer() { Serial.print(m_writeAnswerBuf); }
+void OperatorCommad::sendAnswer() {
+  if (m_writeAnswerBuf.length())
+    Serial.print(m_writeAnswerBuf);
+}
 
 uint16_t OperatorCommad::readSumFromCard() {
   uint16_t s = m_operatorMFRC.readSumFromCard();

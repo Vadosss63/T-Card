@@ -55,6 +55,7 @@ uint16_t OperatorMFRC::readSumFromCard() {
   if (checkCRC())
     return sum;
 
+  m_status = 2;
   return 0;
 }
 

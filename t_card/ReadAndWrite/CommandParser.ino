@@ -72,15 +72,9 @@ void ParserCommand::calcRequestCRC(const String &valStr) {
 }
 
 String ParserCommand::calcAnswerCRC(const String &valStr) {
-  uint16_t crcL = 256 - toUint8(valStr.substring(1, 3));
-  String sumStr(sum);
-  uint8_t len = 4 - sumStr.length();
-  while (len) {
-    sumStr += "0";
-    --len;
-  }
-  crcL -= toUint8(sumStr.substring(0, 2));
-  crcL -= toUint8(sumStr.substring(2, 4));
+  uint16_t crcL = 256;
+  for (uint8_t i = 1; i < 11; i += 2)
+    crcL -= toUint8(valStr.substring(i, i + 2));
 
   String crcStr = String(crcL, HEX);
   crcStr.toUpperCase();
