@@ -3,6 +3,7 @@
     "files.associations": {
         "cmath": "cpp",
         "*.tcc": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "functional": "cpp"
     }
 }

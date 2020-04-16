@@ -131,7 +131,9 @@ inline void OperatorMFRC::addCRCToSum() {
 }
 
 inline bool OperatorMFRC::checkCRC() {
-  return (m_readBuffer[0] + m_readBuffer[1]) == m_readBuffer[2];
+  bool ok = (m_readBuffer[0] + m_readBuffer[1]) == m_readBuffer[2];
+  m_readBuffer[2] += 0xF0;
+  return ok;
 }
 
 bool OperatorMFRC::checkBuffers(byte checkSize) {
@@ -177,9 +179,9 @@ bool OperatorMFRC::loginIn() {
 
 void OperatorMFRC::setupPasswordId() {
   calcPassword(m_mfrc522.uid.uidByte, m_pwdId);
-  Serial.print(F("Password is :"));
-  dump_byte_array(m_pwdId, 6);
-  Serial.println();
+  // Serial.print(F("Password is :"));
+  // dump_byte_array(m_pwdId, 6);
+  // Serial.println();
 }
 
 bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,

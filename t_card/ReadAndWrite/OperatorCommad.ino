@@ -33,6 +33,10 @@ void OperatorCommad::execute() {
     else {
       return;
     }
+    if (MFRC522::STATUS_OK != m_operatorMFRC.getStatus()) {
+      // Serial.print(F("Error"));
+      return;
+    }
 
     break;
   case WRITE_SUM:
@@ -46,10 +50,9 @@ void OperatorCommad::execute() {
   case ERROR_CMD:
     break;
   }
-  if (!m_noError) {
+  if (MFRC522::STATUS_OK != m_operatorMFRC.getStatus()) {
     m_parserCommand.sum = 0;
   }
-
   m_writeAnswerBuf = m_parserCommand.convertToString();
 }
 
