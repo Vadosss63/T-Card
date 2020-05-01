@@ -9,18 +9,14 @@
 
 OperatorCommad operatorCommad;
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
   Serial.setTimeout(5);
-  while (!Serial)
-    ;
+  while (!Serial) {
+  }
   SPI.begin();
   operatorCommad.init();
   // Serial.println(F("T-Card Run."));
 }
 
-void loop()
-{
-  operatorCommad.executeCommand();
-}
+void loop() { operatorCommad.executeCommand(); }

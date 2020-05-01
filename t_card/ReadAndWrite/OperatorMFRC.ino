@@ -33,6 +33,13 @@ bool OperatorMFRC::checkCard() {
   if (piccType != MFRC522::PICC_TYPE_MIFARE_1K)
     return false;
   setupPasswordId();
+
+  setupKey(m_pwdId, 6);
+
+  if (!readPwdSum()) {
+    return false;
+  }
+  
   m_isInitNewCard = true;
   return true;
 }
@@ -88,6 +95,12 @@ bool OperatorMFRC::activateCard() {
   setKeys(&key, &key, &keyPwd, &key, ID_PWD);
 }
 
+bool OperatorMFRC::setupKey(byte *keyIn, byte length) {
+  for (byte i = 0; i < length; i++) {
+    key.keyByte[i] = keyIn[i];
+  }
+}
+
 bool OperatorMFRC::readPwdSum() {
   setupSector(ID_PWD);
   // Сделать установку пароля для ID
@@ -96,6 +109,7 @@ bool OperatorMFRC::readPwdSum() {
 
   readFromCard();
 
+  dump_byte_array(m_readBuffer, m_size);
   return true;
 }
 
@@ -179,9 +193,9 @@ bool OperatorMFRC::loginIn() {
 
 void OperatorMFRC::setupPasswordId() {
   calcPassword(m_mfrc522.uid.uidByte, m_pwdId);
-  // Serial.print(F("Password is :"));
-  // dump_byte_array(m_pwdId, 6);
-  // Serial.println();
+  Serial.print(F("Password is :"));
+  dump_byte_array(m_pwdId, 6);
+  Serial.println();
 }
 
 bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,

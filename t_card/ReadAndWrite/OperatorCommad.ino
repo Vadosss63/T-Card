@@ -44,12 +44,13 @@ void OperatorCommad::execute() {
       writeSumToCard();
     break;
   case ACTIVATION_CARD:
-    if (MFRC522::STATUS_TIMEOUT == m_operatorMFRC.getStatus())
+    //if (MFRC522::STATUS_TIMEOUT == m_operatorMFRC.getStatus())
       activationCard();
     break;
   case ERROR_CMD:
     break;
   }
+  
   if (MFRC522::STATUS_OK != m_operatorMFRC.getStatus()) {
     m_parserCommand.sum = 0;
   }

@@ -25,6 +25,10 @@ public:
   MFRC522::StatusCode getStatus() { return (MFRC522::StatusCode)m_status; }
 
 private:
+  bool setupKey(byte *keyIn, byte length);
+
+  void readPWDSector();
+
   bool readPwdSum();
 
   bool writeAndCheck(byte sectorId);
