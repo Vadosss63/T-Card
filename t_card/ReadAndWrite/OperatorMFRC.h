@@ -20,6 +20,8 @@ public:
 
   static void dump_byte_array(byte *buffer, byte bufferSize);
 
+  void resetKey();
+
   bool activateCard();
 
   MFRC522::StatusCode getStatus() { return (MFRC522::StatusCode)m_status; }

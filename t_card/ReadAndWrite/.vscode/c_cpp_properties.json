@@ -6,6 +6,8 @@
                 "ARDUINO=10800"
             ],
             "includePath": [
+                "C:\\Users\\Vadosss63\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
+                "C:\\Users\\Vadosss63\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\**",
                 "${workspaceRoot}",
                 "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\**",
                 "C:\\Program Files (x86)\\Arduino\\tools\\**",
@@ -21,7 +23,7 @@
             "intelliSenseMode": "clang-x64",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "compilerPath": "H:\\Qt\\Tools\\mingw730_64\\bin\\gcc.exe"            
+            "compilerPath": "H:\\Qt\\Tools\\mingw730_64\\bin\\gcc.exe"
         }
     ],
     "version": 4

@@ -1,10 +1,7 @@
 #include "OperatorMFRC.h"
 
 OperatorMFRC::OperatorMFRC() : m_mfrc522(SS_PIN, RST_PIN) {
-  for (byte i = 0; i < 6; i++) {
-    key.keyByte[i] = 0xFF;
-  }
-
+  resetKey();
   setupSector(ID_PWD);
 }
 
@@ -39,7 +36,7 @@ bool OperatorMFRC::checkCard() {
   if (!readPwdSum()) {
     return false;
   }
-  
+  resetKey();
   m_isInitNewCard = true;
   return true;
 }
@@ -84,10 +81,14 @@ void OperatorMFRC::dump_byte_array(byte *buffer, byte bufferSize) {
   }
 }
 
-bool OperatorMFRC::activateCard() {
+void OperatorMFRC::resetKey() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
+}
+
+bool OperatorMFRC::activateCard() {
+  resetKey();
   MFRC522::MIFARE_Key keyPwd;
   for (byte i = 0; i < 6; i++) {
     keyPwd.keyByte[i] = m_pwdId[i];
@@ -202,54 +203,25 @@ bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,
                            MFRC522::MIFARE_Key *oldKeyB,
                            MFRC522::MIFARE_Key *newKeyA,
                            MFRC522::MIFARE_Key *newKeyB, int sector) {
-  MFRC522::StatusCode status;
+
   byte trailerBlock = sector * 4 + 3;
   byte buffer[18];
   byte size = sizeof(buffer);
 
-  // Authenticate using key A
-  Serial.println(F("Authenticating using key A..."));
-  status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
+  m_status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
       MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, oldKeyA, &(m_mfrc522.uid));
-  if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("PCD_Authenticate() failed: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(status));
+  if (m_status != MFRC522::STATUS_OK)
     return false;
-  }
 
-  // Show the whole sector as it currently is
-  Serial.println(F("Current data in sector:"));
-  m_mfrc522.PICC_DumpMifareClassicSectorToSerial(&(m_mfrc522.uid), oldKeyA,
-                                                 sector);
-  Serial.println();
-
-  // Read data from the block
-  Serial.print(F("Reading data from block "));
-  Serial.print(trailerBlock);
-  Serial.println(F(" ..."));
-  status =
+  m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Read(trailerBlock, buffer, &size);
-  if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("MIFARE_Read() failed: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(status));
+  if (m_status != MFRC522::STATUS_OK)
     return false;
-  }
-  Serial.print(F("Data in block "));
-  Serial.print(trailerBlock);
-  Serial.println(F(":"));
-  dump_byte_array(buffer, 16);
-  Serial.println();
-  Serial.println();
 
-  // Authenticate using key B
-  Serial.println(F("Authenticating again using key B..."));
-  status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
+  m_status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
       MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, oldKeyB, &(m_mfrc522.uid));
-  if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("PCD_Authenticate() failed: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(status));
+  if (m_status != MFRC522::STATUS_OK)
     return false;
-  }
 
   if (newKeyA != nullptr || newKeyB != nullptr) {
     for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
@@ -263,32 +235,16 @@ bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,
   }
 
   // Write data to the block
-  Serial.print(F("Writing data into block "));
-  Serial.print(trailerBlock);
-  Serial.println(F(" ..."));
-  status =
+  m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Write(trailerBlock, buffer, 16);
-  if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("MIFARE_Write() failed: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(status));
+  if (m_status != MFRC522::STATUS_OK)
     return false;
-  }
-  Serial.println();
 
   // Read data from the block (again, should now be what we have written)
-  Serial.print(F("Reading data from block "));
-  Serial.print(trailerBlock);
-  Serial.println(F(" ..."));
-  status =
+  m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Read(trailerBlock, buffer, &size);
-  if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("MIFARE_Read() failed: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(status));
-  }
-  Serial.print(F("Data in block "));
-  Serial.print(trailerBlock);
-  Serial.println(F(":"));
-  dump_byte_array(buffer, 16);
-  Serial.println();
+  if (m_status != MFRC522::STATUS_OK)
+    return false;
+
   return true;
 }

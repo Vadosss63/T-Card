@@ -28,9 +28,10 @@ void OperatorCommad::execute() {
 
   switch (m_parserCommand.cmd) {
   case READ_SUM:
-    if (m_noError)
+    if (m_noError) {
+      Serial.println(F("Read Data"));
       readSumFromCard();
-    else {
+    } else {
       return;
     }
     if (MFRC522::STATUS_OK != m_operatorMFRC.getStatus()) {
@@ -44,13 +45,13 @@ void OperatorCommad::execute() {
       writeSumToCard();
     break;
   case ACTIVATION_CARD:
-    //if (MFRC522::STATUS_TIMEOUT == m_operatorMFRC.getStatus())
-      activationCard();
+    // if (MFRC522::STATUS_TIMEOUT == m_operatorMFRC.getStatus())
+    activationCard();
     break;
   case ERROR_CMD:
     break;
   }
-  
+
   if (MFRC522::STATUS_OK != m_operatorMFRC.getStatus()) {
     m_parserCommand.sum = 0;
   }
@@ -76,6 +77,6 @@ void OperatorCommad::activationCard() {
   bool ok = m_operatorMFRC.activateCard();
   if (ok) {
     m_parserCommand.cmd = ACTIVATION_CARD_OK;
-    m_noError = true;
+    m_noError = m_operatorMFRC.writeSumToCard(0);
   }
 }
