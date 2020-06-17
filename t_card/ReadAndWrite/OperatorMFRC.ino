@@ -146,7 +146,7 @@ inline void OperatorMFRC::addCRCToSum() {
 }
 
 inline bool OperatorMFRC::checkCRC() {
-  bool ok = (m_readBuffer[0] + m_readBuffer[1]) == m_readBuffer[2];
+  bool ok = (byte)(m_readBuffer[0] + m_readBuffer[1]) == m_readBuffer[2];
   m_readBuffer[2] += 0xF0;
   return ok;
 }
