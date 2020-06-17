@@ -29,14 +29,14 @@ bool OperatorMFRC::checkCard() {
   // Проверяем совместимость
   if (piccType != MFRC522::PICC_TYPE_MIFARE_1K)
     return false;
+
   setupPasswordId();
+  setupKey(m_pwdSUM, 6);
 
-  setupKey(m_pwdId, 6);
+  // if (not readPwdSum()) {
+  //   return false;
+  // }
 
-  if (!readPwdSum()) {
-    return false;
-  }
-  resetKey();
   m_isInitNewCard = true;
   return true;
 }
@@ -84,6 +84,7 @@ void OperatorMFRC::dump_byte_array(byte *buffer, byte bufferSize) {
 void OperatorMFRC::resetKey() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
+    keyB.keyByte[i] = 0xFF;
   }
 }
 
@@ -91,9 +92,22 @@ bool OperatorMFRC::activateCard() {
   resetKey();
   MFRC522::MIFARE_Key keyPwd;
   for (byte i = 0; i < 6; i++) {
-    keyPwd.keyByte[i] = m_pwdId[i];
+    keyPwd.keyByte[i] = m_pwdSUM[i];
   }
-  setKeys(&key, &key, &keyPwd, &key, ID_PWD);
+
+  setKeys(&key, &keyB, &keyPwd, &keyB, ID_PWD);
+  setKeys(&key, &keyB, &keyPwd, &keyB, SUM1);
+  setKeys(&key, &keyB, &keyPwd, &keyB, SUM2);
+
+  return true;
+}
+
+bool OperatorMFRC::deactivateCard() {
+  setupKey(m_pwdSUM, 6);
+  setKeys(&key, &keyB, &keyB, &keyB, ID_PWD);
+  setKeys(&key, &keyB, &keyB, &keyB, SUM1);
+  setKeys(&key, &keyB, &keyB, &keyB, SUM2);
+  return true;
 }
 
 bool OperatorMFRC::setupKey(byte *keyIn, byte length) {
@@ -178,8 +192,8 @@ inline void OperatorMFRC::readFromCard() {
 
 bool OperatorMFRC::checkStatus() {
   if (m_status != MFRC522::STATUS_OK) {
-    //    Serial.print(F("Error: "));
-    //    Serial.println(mfrc522.GetStatusCodeName(status));
+    Serial.print(F("Error: "));
+    Serial.println(m_mfrc522.GetStatusCodeName(m_status));
     closeConnection();
     return false;
   }
@@ -189,13 +203,15 @@ bool OperatorMFRC::checkStatus() {
 bool OperatorMFRC::loginIn() {
   m_status = m_mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A,
                                         m_trailerBlock, &key, &(m_mfrc522.uid));
+  m_status = m_mfrc522.PCD_Authenticate(
+      MFRC522::PICC_CMD_MF_AUTH_KEY_B, m_trailerBlock, &keyB, &(m_mfrc522.uid));
   return checkStatus();
 }
 
 void OperatorMFRC::setupPasswordId() {
-  calcPassword(m_mfrc522.uid.uidByte, m_pwdId);
+  calcPassword(m_mfrc522.uid.uidByte, m_pwdSUM);
   Serial.print(F("Password is :"));
-  dump_byte_array(m_pwdId, 6);
+  dump_byte_array(m_pwdSUM, 6);
   Serial.println();
 }
 
@@ -210,17 +226,20 @@ bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,
 
   m_status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
       MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, oldKeyA, &(m_mfrc522.uid));
-  if (m_status != MFRC522::STATUS_OK)
+
+  if (!checkStatus())
     return false;
 
   m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Read(trailerBlock, buffer, &size);
-  if (m_status != MFRC522::STATUS_OK)
+
+  if (!checkStatus())
     return false;
 
   m_status = (MFRC522::StatusCode)m_mfrc522.PCD_Authenticate(
       MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, oldKeyB, &(m_mfrc522.uid));
-  if (m_status != MFRC522::STATUS_OK)
+
+  if (!checkStatus())
     return false;
 
   if (newKeyA != nullptr || newKeyB != nullptr) {
@@ -237,14 +256,13 @@ bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,
   // Write data to the block
   m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Write(trailerBlock, buffer, 16);
-  if (m_status != MFRC522::STATUS_OK)
+
+  if (!checkStatus())
     return false;
 
   // Read data from the block (again, should now be what we have written)
   m_status =
       (MFRC522::StatusCode)m_mfrc522.MIFARE_Read(trailerBlock, buffer, &size);
-  if (m_status != MFRC522::STATUS_OK)
-    return false;
 
-  return true;
+  return checkStatus();
 }

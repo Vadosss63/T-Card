@@ -30,6 +30,7 @@ private:
   void writeSumToCard();
 
   void activationCard();
+  void deactivationCard();
 
   OperatorMFRC m_operatorMFRC;
   ParserCommand m_parserCommand;

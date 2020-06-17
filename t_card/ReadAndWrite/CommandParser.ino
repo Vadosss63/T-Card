@@ -25,6 +25,11 @@ void ParserCommand::convertFormString(const String &cmdStr) {
     return;
   }
 
+  if (cmdStr.equals(DEACTIVATION)) {
+    cmd = DEACTIVATION_CARD;
+    return;
+  }
+
   cmd = ERROR_CMD;
 }
 
@@ -44,6 +49,12 @@ String ParserCommand::convertToString() {
 
   case ACTIVATION_CARD_OK:
     return ACTIVATION_ANSWER_OK;
+
+  case DEACTIVATION_CARD:
+    return DEACTIVATION;
+
+  case DEACTIVATION_CARD_OK:
+    return DEACTIVATION_ANSWER_OK;
 
   default:
     return answer;

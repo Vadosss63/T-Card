@@ -2,7 +2,7 @@
 #define OPERATOR_MFRC_H
 
 class OperatorMFRC {
-  enum SectorValue { ID_PWD = 1, SUM1, SUM2 };
+  enum SectorValue { ID_PWD = 6, SUM1, SUM2 };
 
 public:
   OperatorMFRC();
@@ -23,6 +23,7 @@ public:
   void resetKey();
 
   bool activateCard();
+  bool deactivateCard();
 
   MFRC522::StatusCode getStatus() { return (MFRC522::StatusCode)m_status; }
 
@@ -61,6 +62,7 @@ private:
 
   MFRC522 m_mfrc522;
   MFRC522::MIFARE_Key key;
+  MFRC522::MIFARE_Key keyB;
 
   byte m_sector;
   byte m_blockAddr;
@@ -70,7 +72,6 @@ private:
                                         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
                                         0xFF, 0xFF, 0xFF, 0xFF};
 
-  uint8_t m_pwdId[6] = {};
   uint8_t m_pwdSUM[6] = {};
 
   byte m_status;

@@ -96,45 +96,52 @@
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="0">
+      <item row="6" column="0">
        <widget class="QPushButton" name="addSumBtn">
         <property name="text">
          <string>Пополнить баланс</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="activateBtn">
-        <property name="text">
-         <string>Активация новой карты</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
+      <item row="5" column="0">
        <widget class="QPushButton" name="getSumBtn">
         <property name="text">
          <string>Состояния баланса</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="sumDisplay">
-        <property name="text">
-         <string>0, руб</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
+      <item row="6" column="1">
        <widget class="QSpinBox" name="sumLine">
         <property name="maximum">
          <number>9999</number>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="2" column="1">
        <widget class="QLabel" name="statusActivationDisplay">
         <property name="text">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="activateBtn">
+        <property name="text">
+         <string>Активация новой карты</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="sumDisplay">
+        <property name="text">
+         <string>0, руб</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="deactivateBtn">
+        <property name="text">
+         <string>Деактивация карты</string>
         </property>
        </widget>
       </item>

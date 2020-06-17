@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   connect(ui->SerchBtn, SIGNAL(clicked()), this, SLOT(searchPort()));
   connect(ui->activateBtn, SIGNAL(clicked()), this, SLOT(activateBtn()));
+  connect(ui->deactivateBtn, SIGNAL(clicked()), this, SLOT(deactivateBtn()));
+
   connect(ui->getSumBtn, SIGNAL(clicked()), this, SLOT(sumBtn()));
   connect(ui->addSumBtn, SIGNAL(clicked()), this, SLOT(writeSumToCard()));
 
@@ -83,6 +85,11 @@ void MainWindow::connectToPort() {
 void MainWindow::activateBtn() {
   print("ACTIVATE");
   sendToPort(getActivationCMD());
+}
+
+void MainWindow::deactivateBtn() {
+  print("DEACTIVATE");
+  sendToPort(getDeactivationCMD());
 }
 
 void MainWindow::sumBtn() {

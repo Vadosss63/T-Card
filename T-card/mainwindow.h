@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow {
 
   // Команды управления
   void activateBtn();
+  void deactivateBtn();
   void sumBtn();
   void writeSumToCard();
   void sendDataBtn();
