@@ -12,61 +12,64 @@ namespace Ui {
 class MainWindow;
 }
 
+
+
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+    enum CMD
+    {
+        read,
+        write,
+        activate,
+        deactivate
+    };
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
- signals:
-  void saveSettings(QString name, int baudrate);
-  void print(const QString &data);
-  void dispSum(int sum);
+signals:
+    void saveSettings(QString name, int baudrate);
+    void print(const QString &data);
+    void dispSum(int sum);
 
- private slots:
+private slots:
 
-  void searchPort();
-  void writeSettings();
-  void connectToPort();
-  void setBaudRate(int idx);
+    void searchPort();
+    void writeSettings();
+    void connectToPort();
+    void setBaudRate(int idx);
 
-  // Команды управления
-  void activateBtn();
-  void deactivateBtn();
-  void sumBtn();
-  void writeSumToCard();
-  void sendDataBtn();
-  void readDataFromPort();
+    // Команды управления
+    void activateBtn();
+    void deactivateBtn();
+    void sumBtn();
+    void writeSumToCard();
+    void sendDataBtn();
+    void readDataFromPort();
 
-  void printConsole(const QString &data);
+    void printConsole(const QString &data);
 
-  void displaySum(int sum);
+    void displaySum(int sum);
 
- private:
-  void writeSum(uint16_t val);
+private:
+    void writeSum(uint16_t val);
 
-  QString convertToStringNumber(const std::vector<uint8_t> &data);
-  QString convertToStringInt(uint16_t dataInt);
-  uint16_t getSumFromCard();
+    QString convertToStringNumber(const std::vector<uint8_t> &data);
+    QString convertToStringInt(uint16_t dataInt);
+    void getSumFromCard();
 
-  void waitAnswer();
+    template <typename T>
+    void sendToPort(const T &data) {
+        m_port->writeToPort(data);
+    }
 
-  template <typename T>
-  void sendToPort(const T &data) {
-    m_isReady = false;
-    m_port->writeToPort(data);
-  }
+    CMD m_currentCMD;
 
-  Port *m_port;
-  Ui::MainWindow *ui;
+    Port *m_port;
+    Ui::MainWindow *ui;
 
-  std::string m_dataAnswer;
-  std::atomic<bool> m_isReady = false;
-  std::condition_variable m_dataReady;
-  std::thread m_thread;
-  std::mutex m_printMutex;
-  std::mutex mtx;
+    std::mutex m_printMutex;
 };
 
 #endif  // MAINWINDOW_H

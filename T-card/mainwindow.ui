@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>657</width>
-    <height>330</height>
+    <width>478</width>
+    <height>338</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,140 +20,12 @@
    <string>T-Card</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>0</y>
-      <width>20</width>
-      <height>321</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>290</y>
-      <width>191</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPushButton" name="ConnectBtn">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Conect</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="DisconectBtn">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Disconect</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="operationCardGB">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>180</y>
-      <width>421</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Операции с картой</string>
-    </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>401</width>
-       <height>114</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="6" column="0">
-       <widget class="QPushButton" name="addSumBtn">
-        <property name="text">
-         <string>Пополнить баланс</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="getSumBtn">
-        <property name="text">
-         <string>Состояния баланса</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QSpinBox" name="sumLine">
-        <property name="maximum">
-         <number>9999</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="statusActivationDisplay">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="activateBtn">
-        <property name="text">
-         <string>Активация новой карты</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="sumDisplay">
-        <property name="text">
-         <string>0, руб</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="deactivateBtn">
-        <property name="text">
-         <string>Деактивация карты</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>10</x>
       <y>10</y>
-      <width>421</width>
+      <width>461</width>
       <height>161</height>
      </rect>
     </property>
@@ -161,7 +33,7 @@
      <item>
       <widget class="QLabel" name="lNC_2">
        <property name="text">
-        <string>Log</string>
+        <string>Лог</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -180,77 +52,301 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="ClearLogBtn">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
-      <width>191</width>
-      <height>23</height>
+      <y>180</y>
+      <width>461</width>
+      <height>151</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Clear Log</string>
+    <property name="currentIndex">
+     <number>3</number>
     </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>191</width>
-      <height>53</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="SerchBtn">
-       <property name="text">
-        <string>Serch</string>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Операции с картой</string>
+     </attribute>
+     <widget class="QGroupBox" name="operationCardGB">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>451</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>431</width>
+         <height>91</height>
+        </rect>
        </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="getSumBtn">
+          <property name="text">
+           <string>Состояния баланса</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="sumDisplay">
+          <property name="text">
+           <string>0, руб</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="addSumBtn">
+          <property name="text">
+           <string>Пополнить баланс</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="sumLine">
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Активация(Деактивация)</string>
+     </attribute>
+     <widget class="QLabel" name="statusActivationDisplay">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>20</y>
+        <width>196</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deactivateBtn">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>54</y>
+        <width>197</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Деактивация карты</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="activateBtn">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>20</y>
+        <width>197</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Активация новой карты</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="statusActivationDisplay_2">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>50</y>
+        <width>196</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Настройки</string>
+     </attribute>
+     <widget class="QPushButton" name="ClearLogBtn">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>10</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Очистка лога</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>231</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QComboBox" name="PortNameBox"/>
-       </item>
-       <item>
-        <widget class="QComboBox" name="BaudRateBox">
+        <widget class="QPushButton" name="ConnectBtn">
          <property name="enabled">
           <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Подключить</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="DisconectBtn">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Отключить</string>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="SendDataBtn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>191</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Send</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="send_data">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>191</width>
-      <height>21</height>
-     </rect>
-    </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>231</width>
+        <height>53</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="SerchBtn">
+         <property name="text">
+          <string>Поиск порта</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QComboBox" name="PortNameBox"/>
+         </item>
+         <item>
+          <widget class="QComboBox" name="BaudRateBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="ClearLogBtn_2">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>90</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Сохранить настройки</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>231</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Автоматические подключение к порту</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="testTab">
+     <attribute name="title">
+      <string>Тестирования</string>
+     </attribute>
+     <widget class="QGroupBox" name="testGB">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>441</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Режим тестирования</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <widget class="QPushButton" name="SendDataBtn">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>80</y>
+         <width>181</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Отправить данные</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="send_data">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>421</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>

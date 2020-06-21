@@ -5,6 +5,7 @@
 #include <string>
 
 const std::string READ_ANSWER = ":150";
+const std::string WRITE_ANSWER = ":130";
 const std::string WRITE = ":0301000000";
 const std::string ACTIVATION_OK = ":051000000000000000\r\n\n";
 const std::string DEACTIVATION_OK = ":061000000000000000\r\n\n";
@@ -39,6 +40,14 @@ uint16_t getSum(const std::string& valStr) {
   return toUint16(sumStr);
 }
 
+uint16_t getSumWrite(const std::string& valStr) {
+    // Проверка заголовка
+    if (valStr.compare(0, WRITE_ANSWER.size(), WRITE_ANSWER)) return 0;
+
+    std::string sumStr = valStr.substr(WRITE_ANSWER.size(), 4);
+    std::reverse(sumStr.begin(), sumStr.end());
+    return toUint16(sumStr);
+}
 std::string int_to_hex(uint16_t i) {
   std::stringstream stream;
   stream << std::hex << i;

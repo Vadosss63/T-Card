@@ -192,8 +192,8 @@ inline void OperatorMFRC::readFromCard() {
 
 bool OperatorMFRC::checkStatus() {
   if (m_status != MFRC522::STATUS_OK) {
-    Serial.print(F("Error: "));
-    Serial.println(m_mfrc522.GetStatusCodeName(m_status));
+    // Serial.print(F("Error: "));
+    // Serial.println(m_mfrc522.GetStatusCodeName(m_status));
     closeConnection();
     return false;
   }
@@ -210,9 +210,9 @@ bool OperatorMFRC::loginIn() {
 
 void OperatorMFRC::setupPasswordId() {
   calcPassword(m_mfrc522.uid.uidByte, m_pwdSUM);
-  Serial.print(F("Password is :"));
-  dump_byte_array(m_pwdSUM, 6);
-  Serial.println();
+  // Serial.print(F("Password is :"));
+  // dump_byte_array(m_pwdSUM, 6);
+  // Serial.println();
 }
 
 bool OperatorMFRC::setKeys(MFRC522::MIFARE_Key *oldKeyA,
